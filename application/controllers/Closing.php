@@ -5,24 +5,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Closing extends MY_Controller {
-
-    public function tambah(){
-        $data['title'] = 'Tambah Closing';
-        $data['menu'] = 'Closing';
-        $data['dropdown'] = 'tambahClosing';
-
-        $data['modal'] = ["modal_laporan"];
-
-        $data['js'] = [
-            "ajax.js",
-            "function.js",
-            "helper.js",
-            "modules/closing.js",
-        ];
-
-        $this->load->view("pages/closing/tambah", $data);
-    }
-
     public function list(){
         $data['title'] = 'List Closing';
         $data['menu'] = 'Closing';
@@ -112,6 +94,11 @@ class Closing extends MY_Controller {
         echo json_encode($data);
     }
 
+    public function detail_closing(){
+        $data = $this->closing->detail_closing();
+        echo json_encode($data);
+    }
+
     public function edit_closing(){
         $data = $this->closing->edit_closing();
         echo json_encode($data);
@@ -166,9 +153,20 @@ class Closing extends MY_Controller {
         echo json_encode($data);
     }
 
+    public function add_komen(){
+        $data = $this->closing->add_komen();
+        echo json_encode($data);
+    }
+
+    public function list_komen(){
+        $data = $this->closing->list_komen();
+        echo json_encode($data);
+    }
+
     public function downloadLaporan(){
         $spreadsheet = new Spreadsheet;
 
+        $nama_gudang = $this->input->post("nama_gudang");
         $tgl_awal = $this->input->post("tgl_awal");
         $tgl_akhir = $this->input->post("tgl_akhir");
 
@@ -177,11 +175,12 @@ class Closing extends MY_Controller {
         // $semua_closing = $this->closing->get_all("closing", "tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
         $this->db->from("closing");
         $this->db->where("tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+        $this->db->where("nama_gudang", $nama_gudang);
         $this->db->where("hapus", 0);
         $semua_closing = $this->db->get()->result_array();
 
         $spreadsheet->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'List Closing ' . date("d-m-Y", strtotime($tgl_awal)) . ' - ' . date("d-m-Y", strtotime($tgl_akhir)) . '')
+                    ->setCellValue('A1', 'List Closing ' . date("d-m-Y", strtotime($tgl_awal)) . ' s.d ' . date("d-m-Y", strtotime($tgl_akhir)) . '')
                     ->setCellValue('A2', 'No')
                     ->setCellValue('B2', 'Tgl. Input')
                     ->setCellValue('C2', 'Tgl. Closing')
@@ -257,7 +256,7 @@ class Closing extends MY_Controller {
         $writer = new Xlsx($spreadsheet);
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Data Closing_'.$file_data.'.xlsx"');
+        header('Content-Disposition: attachment;filename="'.$nama_gudang.' data_closing_'.$file_data.'.xlsx"');
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');

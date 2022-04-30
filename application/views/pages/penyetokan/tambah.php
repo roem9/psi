@@ -40,7 +40,7 @@
                                 </div>
 
                                 <?php $varian = list_varian();?>
-                                <ul class="list-group" id="listOfVarian" style="display:none">
+                                <ul class="list-group listOfVarianSelect" style="display:none">
                                 </ul>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
     <script>
         $("#<?= $menu?>").addClass("active")
         $("#<?= $dropdown?>").addClass("active")
-        let urut = 0;
+        // let urut = 0;
     </script>
 
     <!-- load javascript -->

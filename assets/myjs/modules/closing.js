@@ -1,3 +1,15 @@
+let nomor_urut = 0;
+let id_urut = 0;
+
+$(".btnAddClosing").click(function(){
+    $("#listOfClosing").html("");
+
+    id_urut = 0;
+    nomor_urut = 0;
+
+    listOfClosing('varian');
+})
+
 // detail cs 
 $(document).on("click",".statusClosing", function(){
     let form = "#statusClosing";
@@ -113,10 +125,10 @@ $("#statusClosing .btnEdit").click(function(){
 
 $("[name='cari_varian']").on('keyup', function(){
     var value = $(this).val().toLowerCase();
-    if(value == "") $("#listOfClosing").hide();
-    else $("#listOfClosing").show();
+    if(value == "") $(".listOfClosingSelect").hide();
+    else $(".listOfClosingSelect").show();
 
-    $("#listOfClosing li").each(function () {
+    $(".listOfClosingSelect li").each(function () {
         if ($(this).text().toLowerCase().search(value) > -1) {
             $(this).show();
             $(this).prev('.subjectName').last().show();
@@ -127,33 +139,59 @@ $("[name='cari_varian']").on('keyup', function(){
 })
 
 $(document).on("click", ".varian", function(){
-    urut++;
-    index++;
+    id_urut++;
+    nomor_urut++;
+
     let id_varian = $(this).data("id");
     let result = ajax(url_base+"produk/get_varian", "POST", {id_varian : id_varian});
-    // console.log(result)
-    $(".listOfClosing").append(`
-        <tr id="`+urut+`">
+    
+    $("#listOfClosing").append(`
+        <tr id="`+id_urut+`">
+            <td><span class="urut">`+nomor_urut+`</span></td>
             <td>
-                <a href="javascript:void(0)" class="hapusClosing text-danger" data-id="`+index+`" data-nama="`+result.nama_varian+`">`+result.nama_varian+`</a> <br>
+                <a href="javascript:void(0)" class="hapusClosing text-danger" data-id="`+id_urut+`" data-nama="`+result.nama_varian+`" data-form="#formClosing">`+result.nama_varian+`</a> <br>
             </td>
-            <td class="text-right"><input type="number" name="qty" id="qty-`+index+`" class="form form-control form-control-md required number" data-id="`+index+`" style="padding-left: 5px; padding-right: 5px">
+            <td class="text-right"><input type="number" name="qty" class="form form-control form-control-md required number" style="padding-left: 5px; padding-right: 5px">
                 <input type="hidden" name="id_varian" value="`+result.id_varian+`">
-                <input type="hidden" name="harga" value="`+result.harga+`" id="harga-`+index+`">
+                <input type="hidden" name="harga" value="`+result.harga+`">
             </td>
         </tr>
     `)
     $("#btnSimpan").show();
     
     $("[name='cari_varian']").val("");
-    $("#listOfClosing").hide();
+    $(".listOfClosingSelect").hide();
+})
+
+$(document).on("click", ".varianDetail", function(){
+    id_urut++;
+    nomor_urut++;
+
+    let id_varian = $(this).data("id");
+    let result = ajax(url_base+"produk/get_varian", "POST", {id_varian : id_varian});
+    
+    $("#listOfClosingDetail").append(`
+        <tr id="`+id_urut+`">
+            <td><span class="urut">`+nomor_urut+`</span></td>
+            <td>
+                <a href="javascript:void(0)" class="hapusClosing text-danger" data-id="`+id_urut+`" data-nama="`+result.nama_varian+`" data-form="#formDetailClosing">`+result.nama_varian+`</a> <br>
+            </td>
+            <td class="text-right"><input type="number" name="qty" class="form form-control form-control-md required number" style="padding-left: 5px; padding-right: 5px">
+                <input type="hidden" name="id_varian" value="`+result.id_varian+`">
+                <input type="hidden" name="harga" value="`+result.harga+`">
+            </td>
+        </tr>
+    `)
+    $("#btnSimpan").show();
+    
+    $("[name='cari_varian']").val("");
+    $(".listOfClosingSelect").hide();
 })
 
 $(document).on("click", ".hapusClosing", function(){
-    let form = "#formClosing";
+    let form = $(this).data("form");
     let id = $(this).data("id");
     let nama = $(this).data("nama");
-    // console.log(id, nama);
 
     Swal.fire({
         icon: 'question',
@@ -164,23 +202,23 @@ $(document).on("click", ".hapusClosing", function(){
         cancelButtonText: 'Tidak'
     }).then(function (result) {
         if (result.value) {
-            urut--;
-            index--;
-            $("#"+id).remove();
+            nomor_urut--;
+            $(form+" #"+id).remove();
             let no = 1;
-            $.each($(".container-xl .urut"), function(){
+            $.each($(form+" .urut"), function(){
                 $(this).html(no)
                 no++
             })
 
-            if(urut == 0){
+            if(nomor_urut == 0){
                 $("#btnSimpan").hide();
+                $("#btnEdit").hide();
             }
         }
     })
 })
 
-$("#formClosing #btnSimpan").click(function(){
+$("#btnSimpan").click(function(){
     Swal.fire({
         icon: 'question',
         text: 'Yakin akan menambahkan data closing baru?',
@@ -226,11 +264,14 @@ $("#formClosing #btnSimpan").click(function(){
                 let result = ajax(url_base+"closing/add_closing", "POST", formData);
 
                 if(result == 1){
-                    urut = 0;
+                    id_urut = 0;
+                    nomor_urut = 0;
+
                     $("#btnSimpan").hide();
                 
                     $(form).trigger('reset');
-                    $(".listOfClosing").html("");
+                    $("[name='teks']").val("");
+                    $("#listOfClosing").html("");
                     listOfClosing();
 
                     Swal.fire({
@@ -240,12 +281,18 @@ $("#formClosing #btnSimpan").click(function(){
                         showConfirmButton: false,
                         timer: 1500
                     })
+
+                    loadData();
+                    $('#addClosing .modal-body').scrollTop(0);
                 } else {
-                    urut = 0;
+                    id_urut = 0;
+                    nomor_urut = 0;
+
                     $("#btnSimpan").hide();
                 
                     $(form).trigger('reset');
-                    $(".listOfClosing").html("");
+                    $("[name='teks']").val("");
+                    $("#listOfClosing").html("");
                     listOfClosing();
 
                     Swal.fire({
@@ -253,13 +300,72 @@ $("#formClosing #btnSimpan").click(function(){
                         title: 'Oops...',
                         text: 'Data Duplikat. Gagal menginputkan data closing'
                     })
+                    $('#addClosing .modal-body').scrollTop(0);
                 }
             }
         }
     })
 })
 
-function listOfClosing(){
+$(document).on("click", ".detailClosing", function(){
+    $("#btnEdit").show();
+
+    id_urut = 0;
+    nomor_urut = 0;
+
+    let id_closing = $(this).data("id");
+    let result = ajax(url_base+"closing/detail_closing", "POST", {id_closing:id_closing});
+
+    console.log(result);
+
+    let  form = "#formDetailClosing";
+
+    $.each(result.closing, function(key, value){
+        $(form+" [name='"+key+"']").val(value)
+    })
+
+    html_detail = "";
+
+    result.detail_closing.forEach(detail => {
+        id_urut++;
+        nomor_urut++;
+
+        html_detail += `
+        <tr id="`+id_urut+`">
+            <td>
+                <input type="hidden" name="id_varian" value="`+detail.id_varian+`">
+                <span class="urut">`+nomor_urut+`</span>
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="hapusClosing text-danger" data-form="`+form+`" data-id="`+id_urut+`" data-nama="`+detail.nama_varian+`">`+detail.nama_varian+`</a>
+            </td>
+            <td class="text-right">
+                <input type="number" name="qty" class="form form-control form-control-md required" value="`+detail.qty+`">
+            </td>
+        </tr>
+        `
+    })
+
+    $("#listOfClosingDetail").html(html_detail);
+
+    listOfClosing('varianDetail');
+
+    let kelurahan = $(form+" [name='kelurahan']").val();
+    let kecamatan = $(form+" [name='kecamatan']").val();
+
+    let choice = `<option value="">Pilih Rekomendasi Kode Pos</option>`;
+    result = ajax(url_base+"closing/get_rekomendasi_kode_pos", "POST", {kelurahan:kelurahan, kecamatan:kecamatan});
+
+    console.log(result);
+
+    result.forEach(data => {
+        choice += `<option value="`+data.provinsi+`|`+data.kota_kabupaten+`|`+data.kecamatan+`|`+data.kelurahan+`|`+data.kode_pos+`">`+data.kecamatan+` `+data.kelurahan+` `+data.kode_pos+`</option>`
+    });
+
+    $("[name='rekomendasi_kode_pos']").html(choice)
+})
+
+function listOfClosing(clas_varian){
     let result = ajax(url_base+"produk/get_all_varian", "POST");
     let html = "";
 
@@ -268,7 +374,7 @@ function listOfClosing(){
         <li class="list-group-item list-group-item-light text-dark">
             <div class="d-flex justify-content-between">
                 `+ varian.kode_varian + ` - `+ varian.nama_varian + ` (` + varian.stok + `)
-                <a href="javascript:void(0)" class="varian text-success" data-id="`+varian.id_varian+`">
+                <a href="javascript:void(0)" class="`+clas_varian+` text-success" data-id="`+varian.id_varian+`">
                     `+tablerIcon("square-plus", "me-1")+`
                 </a>
             </div>
@@ -276,10 +382,8 @@ function listOfClosing(){
         `
     })
 
-    $("#listOfClosing").html(html);
+    $(".listOfClosingSelect").html(html);
 }
-
-listOfClosing();
 
 $(document).on("click", ".arsipClosing", function(){
     let id_closing = $(this).data("id");
@@ -353,7 +457,7 @@ $(document).on("click", ".bukaArsipClosing", function(){
     })
 })
 
-$("#formClosing #btnEdit").click(function(){
+$("#btnEdit").click(function(){
     Swal.fire({
         icon: 'question',
         text: 'Yakin akan mengubah data closing?',
@@ -363,7 +467,7 @@ $("#formClosing #btnEdit").click(function(){
         cancelButtonText: 'Tidak'
     }).then(function (result) {
         if (result.value) {
-            let form = "#formClosing";
+            let form = "#formDetailClosing";
             let formData = {};
             $(form+" .form").each(function(index){
                 formData = Object.assign(formData, {[$(this).attr("name")]: $(this).val()})
@@ -413,12 +517,14 @@ $("#formClosing #btnEdit").click(function(){
                         text: 'terjadi kesalahan, silahkan mulai ulang halaman'
                     })
                 }
+
+                loadData();
             }
         }
     })
 })
 
-$("#kode_pos").change(function(){
+$("[name='rekomendasi_kode_pos']").change(function(){
     let data = $(this).val();
     data = data.split("|");
 
@@ -441,7 +547,7 @@ $("[name='kelurahan']").on("change", function(){
         choice += `<option value="`+data.provinsi+`|`+data.kota_kabupaten+`|`+data.kecamatan+`|`+data.kelurahan+`|`+data.kode_pos+`">`+data.kecamatan+` `+data.kelurahan+` `+data.kode_pos+`</option>`
     });
 
-    $("#kode_pos").html(choice)
+    $("[name='rekomendasi_kode_pos']").html(choice)
 })
 
 $("[name='kecamatan']").on("change", function(){
@@ -456,7 +562,7 @@ $("[name='kecamatan']").on("change", function(){
         choice += `<option value="`+data.provinsi+`|`+data.kota_kabupaten+`|`+data.kecamatan+`|`+data.kelurahan+`|`+data.kode_pos+`">`+data.kecamatan+` `+data.kelurahan+` `+data.kode_pos+`</option>`
     });
 
-    $("#kode_pos").html(choice)
+    $("[name='rekomendasi_kode_pos']").html(choice)
 })
 
 var v_nama_closing = "";
@@ -482,7 +588,7 @@ $(".btnGenerate").click(function(){
     $("#nama_closing").html();
     $("#alamat").html();
     $("#no_hp").html();
-    $("#kode_pos").html();
+    $("[name='rekomendasi_kode_pos']").html();
     $("#transfer").html();
     $("#cod").html();
     $("#produk").html();
@@ -550,7 +656,7 @@ $(".btnGenerate").click(function(){
         choice += `<option value="`+data.provinsi+`|`+data.kota_kabupaten+`|`+data.kecamatan+`|`+data.kelurahan+`|`+data.kode_pos+`">`+data.kecamatan+` `+data.kelurahan+` `+data.kode_pos+`</option>`
     });
 
-    $("#kode_pos").html(choice)
+    $("[name='rekomendasi_kode_pos']").html(choice)
 
     Swal.fire({
         position: 'center',
@@ -560,3 +666,83 @@ $(".btnGenerate").click(function(){
         timer: 1500
     })
 })
+
+$(document).on("click", ".komenClosing", function(){
+    var id_closing = $(this).data("id");
+
+    console.log(id_closing);
+    loadKomen(id_closing);
+})
+
+$("#btnKirimKomen").click(function(){
+    Swal.fire({
+        icon: 'question',
+        text: 'Yakin akan menambahkan komen baru?',
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak'
+    }).then(function (result) {
+        if (result.value) {
+            let form = "#komenClosing";
+            
+            let formData = {};
+            $(form+" .form").each(function(index){
+                formData = Object.assign(formData, {[$(this).attr("name")]: $(this).val()})
+            })
+
+            let eror = required(form);
+            
+            if( eror == 1){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'lengkapi isi form terlebih dahulu'
+                })
+            } else {
+                let result = ajax(url_base+"closing/add_komen", "POST", formData);
+
+                if(result == 1){
+                    loadData();
+                    $("#komenClosing [name='komen']").val("");
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        text: 'Berhasil menambahkan komen',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                    
+                    var id_closing = $(form+" [name='id_closing']").val();
+                    loadKomen(id_closing);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'terjadi kesalahan, silahkan mulai ulang halaman'
+                    })
+                }
+            }
+        }
+    })
+})
+
+function loadKomen(id_closing) {
+    let result = ajax(url_base+"closing/list_komen", "POST", {id_closing:id_closing});
+    
+    $("#komenClosing [name='id_closing'").val(result.closing.id_closing);
+    $("#nama_closing").html("<b>"+result.closing.nama_closing+"</b>");
+    $("#produk_closing").html("<b>"+result.closing.produk_closing+"</b>");
+
+    html_komen = "";
+    result.komen.forEach(komen => {
+        html_komen += `<p>
+            <b>`+komen.nama_user+` (`+komen.tgl_input+`)</b><br>
+            `+komen.komen+`
+        </p>`;
+    });
+
+    $("#list_komen").html(html_komen);
+}

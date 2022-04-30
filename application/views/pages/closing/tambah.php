@@ -60,11 +60,12 @@
                                 <table class="table card-table table-vcenter text-dark">
                                     <thead>
                                         <tr>
+                                            <th>No.</th>
                                             <th>Varian Produk</th>
                                             <th width="20%">QTY</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="listOfClosing">
+                                    <tbody id="listOfClosing">
                                     </tbody>
                                 </table>
                                 <div class="form-floating mb-3">
@@ -73,7 +74,7 @@
                                 </div>
 
                                 <?php $varian = list_varian();?>
-                                <ul class="list-group mb-3" id="listOfClosing" style="display:none">
+                                <ul class="list-group mb-3" id="listOfClosingSelect" style="display:none">
                                     <?php foreach ($varian as $varian) :?>
                                     <?php endforeach;?>
                                 </ul>
@@ -210,8 +211,8 @@
     <script>
         $("#<?= $menu?>").addClass("active")
         $("#<?= $dropdown?>").addClass("active")
-        let urut = 0;
-        let index = 0;
+        // let urut = 0;
+        // let index = 0;
     </script>
 
     <!-- load javascript -->

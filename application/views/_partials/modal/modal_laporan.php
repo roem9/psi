@@ -8,6 +8,16 @@
             <form action="<?= base_url()?>closing/downloadLaporan" method="post" target="_blank">
                 <div class="modal-body">
                     <div class="form-floating mb-3">
+                        <select name="nama_gudang" class="form form-control form-control-sm required">
+                            <option value="">Pilih Gudang</option>
+                            <?php $gudang = list_gudang();?>
+                            <?php foreach ($gudang as $gudang) :?>
+                                <option value="<?= $gudang['nama_gudang']?>"><?= $gudang['nama_gudang']?></option>
+                            <?php endforeach;?>
+                        </select>
+                        <label class="col-form-label">Pilih Gudang</label>
+                    </div>
+                    <div class="form-floating mb-3">
                         <input type="date" name="tgl_awal" class="form-control form-control-sm">
                         <label class="col-form-label">Tgl Awal</label>
                     </div>

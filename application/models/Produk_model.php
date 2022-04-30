@@ -76,7 +76,7 @@ class Produk_model extends MY_Model {
     }
 
     public function load_varian($status){
-        $this->datatables->select('id_varian, kode_varian, nama_varian, produk, harga, tgl_input, hapus');
+        $this->datatables->select('id_varian, kode_varian, nama_varian, produk, harga, komisi, tgl_input, hapus');
         $this->datatables->from('varian_produk');
 
         $this->datatables->add_column('stok','$1', 'stok_varian(id_varian)');
@@ -145,15 +145,25 @@ class Produk_model extends MY_Model {
     public function edit_varian(){
         // edit seluruh artikel dengan kondisi memiliki nama artikel dan produk yang sama
         $id_varian = $this->input->post("id_varian");
+        $all_komisi = $this->input->post("all_komisi");
+        
+        unset($_POST['all_komisi']);
         unset($_POST['id_varian']);
 
+
         $_POST['harga'] = rupiah_to_int($_POST['harga']);
+        $_POST['komisi'] = rupiah_to_int($_POST['komisi']);
 
         $data = [];
         foreach ($_POST as $key => $value) {
             $data[$key] = $this->input->post($key);
         }
         
+        // jika all_komisi = Yes ubah semua komisi jika produknya sama 
+        if($all_komisi == "Yes"){
+            $this->edit_data("varian_produk", ["produk" => $data['produk']], ["komisi" => $data['komisi']]);
+        }
+
         // ubah semua data varian pada detail closing
         $detail = [
             "kode_varian" => $data['kode_varian'],
@@ -163,8 +173,9 @@ class Produk_model extends MY_Model {
         $this->edit_data("detail_closing", ["id_varian" => $id_varian], $detail);
 
         $query = $this->edit_data("varian_produk", ["id_varian" => $id_varian], $data);
-        if($query) return 1;
-        else return 0;
+        // if($query) return 1;
+        // else return 0;
+        return 1;
     }
     
     public function arsip_varian(){

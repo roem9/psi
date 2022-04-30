@@ -39,9 +39,6 @@
                     </span>
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" id="tambahPenyetokan" href="<?= base_url()?>penyetokan" >
-                        Tambah Penyetokan
-                    </a>
                     <a class="dropdown-item" id="listPenyetokan" href="<?= base_url()?>penyetokan/list" >
                         List Penyetokan
                     </a>
@@ -63,9 +60,6 @@
                     </span>
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" id="tambahClosing" href="<?= base_url()?>closing/tambah" >
-                        Tambah Closing
-                    </a>
                     <a class="dropdown-item" id="listClosing" href="<?= base_url()?>closing/list" >
                         List Closing
                     </a>
@@ -79,6 +73,19 @@
                         Perlu Perhatian
                     </a>
                 </div>
+            </li>
+
+            <li class="nav-item" id="pencairan">
+                <a class="nav-link btnLoading" href="<?= base_url()?>other/pencairan" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <svg width="24" height="24" class="me-3">
+                            <use xlink:href="<?= base_url()?>assets/tabler-icons-1.39.1/tabler-sprite.svg#tabler-cash" />
+                        </svg> 
+                    </span>
+                    <span class="nav-link-title">
+                        Pencairan
+                    </span>
+                </a>
             </li>
 
             <li class="nav-item dropdown" id="Closing">
@@ -119,6 +126,9 @@
                     </a>
                     <a class="dropdown-item" id="listGudang" href="<?= base_url()?>other/gudang" >
                         List Gudang
+                    </a>
+                    <a class="dropdown-item" id="listGudang" href="<?= base_url()?>other/kpi" >
+                        List KPI
                     </a>
                 </div>
             </li>

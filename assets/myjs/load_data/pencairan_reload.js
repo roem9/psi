@@ -12,12 +12,17 @@ var datatable = $('#dataTable').DataTable({
     },
     processing: true,
     serverSide: true,
-    ajax: {"url": url_base+"other/load_cs", "type": "POST"},
+    ajax: {"url": url_base+"other/load_pencairan", "type": "POST"},
     columns: [
+        {"data": "tgl_pencairan"},
+        {"data": "periode", render : function(row, data, iDisplayIndex){
+            return iDisplayIndex.periode_pencairan;
+        }},
         {"data": "nama_cs"},
-        {"data": "username"},
-        {"data": "no_wa"},
-        {"data": "alamat"},
+        {"data": "nominal", render : function(row, data, iDisplayIndex){
+            $(row).addClass("text-nowrap")
+            return `Rp `+formatRupiah(iDisplayIndex.nominal);
+        }},
         {"data": "menu"},
     ],
     order: [[0, 'asc']],
@@ -28,8 +33,9 @@ var datatable = $('#dataTable').DataTable({
         $('td:eq(0)', row).html();
     },
     "columnDefs": [
-    { "searchable": false, "targets": [""] },  // Disable search on first and last columns
-    { "targets": [4], "orderable": false},
+        { "searchable": false, "targets": [""] },  // Disable search on first and last columns
+        { "targets": [4], "orderable": false},
+        { "className": "text-nowrap", "targets": [ 3 ] }
     ],
     "rowReorder": {
         "selector": 'td:nth-child(0)'

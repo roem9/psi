@@ -12,12 +12,11 @@ var datatable = $('#dataTable').DataTable({
     },
     processing: true,
     serverSide: true,
-    ajax: {"url": url_base+"other/load_cs", "type": "POST"},
+    ajax: {"url": url_base+"other/load_kpi", "type": "POST"},
     columns: [
-        {"data": "nama_cs"},
-        {"data": "username"},
-        {"data": "no_wa"},
-        {"data": "alamat"},
+        {"data": "tgl_kpi", render : function(row, data, iDisplayIndex){
+            return iDisplayIndex.periode;
+        }},
         {"data": "menu"},
     ],
     order: [[0, 'asc']],
@@ -29,7 +28,7 @@ var datatable = $('#dataTable').DataTable({
     },
     "columnDefs": [
     { "searchable": false, "targets": [""] },  // Disable search on first and last columns
-    { "targets": [4], "orderable": false},
+    { "targets": [1], "orderable": false},
     ],
     "rowReorder": {
         "selector": 'td:nth-child(0)'

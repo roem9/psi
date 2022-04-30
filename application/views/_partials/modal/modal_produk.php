@@ -55,6 +55,10 @@
                         <input type="text" name="harga" class="form form-control form-control-sm required rupiah">
                         <label class="col-form-label">Harga</label>
                     </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="komisi" class="form form-control form-control-sm required rupiah">
+                        <label class="col-form-label">Komisi</label>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -99,6 +103,14 @@
                     <input type="text" name="harga" class="form form-control form-control-sm required rupiah">
                     <label class="col-form-label">Harga</label>
                 </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="komisi" class="form form-control form-control-sm required rupiah">
+                    <label class="col-form-label">Komisi</label>
+                </div>
+                <label class="form-check">
+                    <input class="form-check-input" type="checkbox" name="checkbox" value="yes">
+                    <span class="form-check-label">Terapkan komisi untuk semua produk yang sama</span>
+                </label>
             </div>
             <div class="modal-footer">
                 <div class="d-flex justify-content-end">

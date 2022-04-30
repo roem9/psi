@@ -4,37 +4,19 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Penyetokan extends MY_Controller {
-
-    public function index(){
-        $data['title'] = 'Tambah Penyetokan';
-        $data['menu'] = 'Penyetokan';
-        $data['dropdown'] = 'tambahPenyetokan';
-
-        $data['modal'] = ["modal_laporan"];
-
-        $data['js'] = [
-            "ajax.js",
-            "function.js",
-            "helper.js",
-            "modules/penyetokan.js",
-        ];
-
-        $this->load->view("pages/penyetokan/tambah", $data);
-    }
-
     public function list(){
         $data['title'] = 'List Penyetokan';
         $data['menu'] = 'Penyetokan';
         $data['dropdown'] = 'listPenyetokan';
 
-        $data['modal'] = ["modal_laporan"];
+        $data['modal'] = ["modal_laporan", "modal_penyetokan"];
 
         $data['js'] = [
             "ajax.js",
             "function.js",
             "helper.js",
-            "load_data/penyetokan_reload.js",
             "modules/penyetokan.js",
+            "load_data/penyetokan_reload.js",
         ];
 
         $this->load->view("pages/penyetokan/list", $data);
@@ -76,6 +58,11 @@ class Penyetokan extends MY_Controller {
 
         $this->load->view("pages/penyetokan/detail", $data);
 
+    }
+
+    public function detail_penyetokan(){
+        $data = $this->penyetokan->detail_penyetokan();
+        echo json_encode($data);
     }
 
     public function add_penyetokan(){

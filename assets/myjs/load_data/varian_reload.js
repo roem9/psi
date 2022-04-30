@@ -33,6 +33,7 @@ var datatable = $('#dataTable').DataTable({
             else return "<center>"+data+"</center>"
         }},
         {"data": "harga", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp ' ) },
+        {"data": "komisi", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp ' ) },
         {"data": "menu"},
     ],
     order: [[1, 'asc']],
@@ -44,7 +45,7 @@ var datatable = $('#dataTable').DataTable({
     },
     "columnDefs": [
     { "searchable": false, "targets": [""] },  // Disable search on first and last columns
-    { "targets": [3, 5], "orderable": false},
+    { "targets": [3, 6], "orderable": false},
     ],
     "rowReorder": {
         "selector": 'td:nth-child(0)'

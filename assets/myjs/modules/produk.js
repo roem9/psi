@@ -231,7 +231,15 @@ $("#detailVarian .btnEdit").click(function(){
                 formData = Object.assign(formData, {[$(this).attr("name")]: $(this).val()})
             })
 
+            if ($("[name='checkbox']").is(":checked")){
+                formData = Object.assign(formData, {"all_komisi": "Yes"})
+            } else {
+                formData = Object.assign(formData, {"all_komisi": "No"})
+            }
+
             let eror = required(form);
+
+            console.log(formData)
             
             if( eror == 1){
                 Swal.fire({
@@ -252,6 +260,8 @@ $("#detailVarian .btnEdit").click(function(){
                         showConfirmButton: false,
                         timer: 1500
                     })
+
+                    $("[name='checkbox']").prop("checked", false);
                 } else {
                     Swal.fire({
                         icon: 'error',

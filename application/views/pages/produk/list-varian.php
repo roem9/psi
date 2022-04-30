@@ -44,6 +44,7 @@
                                         <th class="text-dark desktop" style="font-size: 11px">Produk</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Stok</th>
                                         <th class="text-dark desktop" style="font-size: 11px">Harga</th>
+                                        <th class="text-dark desktop" style="font-size: 11px">Komisi</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Tindakan</th>
                                     </tr>
                                 </thead>

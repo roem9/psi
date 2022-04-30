@@ -77,6 +77,79 @@ class Other extends MY_Controller {
         $output = $this->other->load_gudang();
         echo $output;
     }
+
+    public function kpi(){
+        $data['title'] = 'List KPI';
+        $data['menu'] = "Other";
+        $data['dropdown'] = "listKpi";
+        $data['modal'] = ["modal_other"];
+        $data['js'] = [
+            "ajax.js",
+            "function.js",
+            "helper.js",
+            "load_data/kpi_reload.js",
+            "modules/kpi.js",
+        ];
+
+        $this->load->view("pages/other/list_kpi", $data);
+    }
+
+    public function add_kpi(){
+        $data = $this->other->add_kpi();
+        echo json_encode($data);
+    }
+
+    public function edit_kpi(){
+        $data = $this->other->edit_kpi();
+        echo json_encode($data);
+    }
+    
+    public function get_kpi(){
+        $data = $this->other->get_kpi();
+        echo json_encode($data);
+    }
+
+    public function load_kpi(){
+        header('Content-Type: application/json');
+        $output = $this->other->load_kpi();
+        echo $output;
+    }
+
+    public function pencairan(){
+        $data['title'] = 'List Pencairan';
+        $data['menu'] = "pencairan";
+        $data['modal'] = ["modal_other"];
+        $data['js'] = [
+            "ajax.js",
+            "function.js",
+            "helper.js",
+            "load_data/pencairan_reload.js",
+            "modules/pencairan.js",
+        ];
+
+        $this->load->view("pages/other/list_pencairan", $data);
+    }
+
+    public function add_pencairan(){
+        $data = $this->other->add_pencairan();
+        echo json_encode($data);
+    }
+
+    public function edit_pencairan(){
+        $data = $this->other->edit_pencairan();
+        echo json_encode($data);
+    }
+    
+    public function get_pencairan(){
+        $data = $this->other->get_pencairan();
+        echo json_encode($data);
+    }
+
+    public function load_pencairan(){
+        header('Content-Type: application/json');
+        $output = $this->other->load_pencairan();
+        echo $output;
+    }
 }
 
 /* End of file Produk.php */

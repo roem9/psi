@@ -75,7 +75,7 @@ class Penyetokan_model extends MY_Model {
                             '.tablerIcon("settings", "").'
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" target="_blank" href="'.base_url().'penyetokan/detail/$2" data-id="$1">
+                            <a class="dropdown-item detailPenyetokan" data-bs-toggle="modal" href="#detailPenyetokan" data-id="$1">
                                 '.tablerIcon("info-circle", "me-1").'
                                 Detail Penyetokan
                             </a>
@@ -92,7 +92,7 @@ class Penyetokan_model extends MY_Model {
                             '.tablerIcon("settings", "").'
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" target="_blank" href="'.base_url().'penyetokan/detail/$2" data-id="$1">
+                            <a class="dropdown-item detailPenyetokan" data-bs-toggle="modal" href="#detailPenyetokan" data-id="$1">
                                 '.tablerIcon("info-circle", "me-1").'
                                 Detail Penyetokan
                             </a>
@@ -109,11 +109,11 @@ class Penyetokan_model extends MY_Model {
 
     public function edit_penyetokan(){
         $id_penyetokan = $this->input->post("id_penyetokan");
-        $id_artikel = $this->input->post("id_artikel");
+        $id_varian = $this->input->post("id_varian");
         $qty = $this->input->post("qty");
 
         unset($_POST['id_penyetokan']);
-        unset($_POST['id_artikel']);
+        unset($_POST['id_varian']);
         unset($_POST['qty']);
 
         $data = [];
@@ -125,13 +125,12 @@ class Penyetokan_model extends MY_Model {
 
         $this->delete_data("detail_penyetokan", ["id_penyetokan" => $id_penyetokan]);
 
-        foreach ($id_artikel as $i => $id_artikel) {
-            $artikel = $this->get_one("artikel", ["id_artikel" => $id_artikel]);
+        foreach ($id_varian as $i => $id_varian) {
+            $varian = $this->get_one("varian_produk", ["id_varian" => $id_varian]);
             $data = [
                 "id_penyetokan" => $id_penyetokan,
-                "id_artikel" => $id_artikel,
-                "nama_artikel" => $artikel['nama_artikel'],
-                "ukuran" => $artikel['ukuran'],
+                "id_varian" => $id_varian,
+                "nama_varian" => $varian['nama_varian'],
                 "qty" => $qty[$i],
             ];
 
@@ -140,6 +139,16 @@ class Penyetokan_model extends MY_Model {
         
         if($query) return 1;
         else return 0;
+    }
+
+    public function detail_penyetokan(){
+        $id_penyetokan = $this->input->post("id_penyetokan");
+
+        $data['penyetokan'] = $this->penyetokan->get_one("penyetokan", ["id_penyetokan" => $id_penyetokan]);
+        $data['penyetokan']['tgl_penyetokan'] = date("Y-m-d\TH:i", strtotime($data['penyetokan']['tgl_penyetokan']));
+        $data['detail_penyetokan'] = $this->penyetokan->get_all("detail_penyetokan", ["id_penyetokan" => $id_penyetokan]);
+
+        return $data;
     }
 
 }

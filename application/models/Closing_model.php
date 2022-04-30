@@ -26,11 +26,13 @@ class Closing_model extends MY_Model {
         $nama_cs = trim($this->input->post("nama_cs"));
         $catatan = trim($this->input->post("catatan"));
         $nama_gudang = trim($this->input->post("nama_gudang"));
+        $tipe_closing = trim($this->input->post("tipe_closing"));
 
         $cs = $this->get_one("cs", ["nama_cs" => $nama_cs]);
         $gudang = $this->get_one("gudang", ["nama_gudang" => $nama_gudang]);
         
         $data = [
+            "tipe_closing" => $tipe_closing,
             "tgl_closing" => $tgl_closing,
             "nama_closing" => $nama_closing,
             "no_hp" => $no_hp,
@@ -64,7 +66,6 @@ class Closing_model extends MY_Model {
             
             $id_varian = $this->input->post("id_varian");
             $qty = $this->input->post("qty");
-            $harga = $this->input->post("harga");
             foreach ($id_varian as $i => $id_varian) {
                 $varian = $this->get_one("varian_produk", ["id_varian" => $id_varian]);
                 $data = [
@@ -74,7 +75,7 @@ class Closing_model extends MY_Model {
                     "nama_varian" => $varian['nama_varian'],
                     "produk" => $varian['produk'],
                     "qty" => $qty[$i],
-                    "harga" => $varian['harga'],
+                    "komisi" => $varian['komisi'],
                 ];
     
                 $query = $this->add_data("detail_closing", $data);
@@ -83,6 +84,15 @@ class Closing_model extends MY_Model {
             if($query) return 1;
             else return 0;
         }
+    }
+
+    public function detail_closing(){
+        $id_closing = $this->input->post("id_closing");
+
+        $data['closing'] = $this->get_one("closing", ["id_closing" => $id_closing]);
+        $data['detail_closing'] = $this->get_all("detail_closing", ["id_closing" => $id_closing]);
+
+        return $data;
     }
 
     public function edit_closing(){
@@ -108,11 +118,15 @@ class Closing_model extends MY_Model {
         $nama_cs = trim($this->input->post("nama_cs"));
         $catatan = trim($this->input->post("catatan"));
         $nama_gudang = trim($this->input->post("nama_gudang"));
+        $tipe_closing = trim($this->input->post("tipe_closing"));
+        $kesalahan_data = trim($this->input->post("kesalahan_data"));
         
         $cs = $this->get_one("cs", ["nama_cs" => $nama_cs]);
         $gudang = $this->get_one("gudang", ["nama_gudang" => $nama_gudang]);
 
         $data = [
+            "tipe_closing" => $tipe_closing,
+            "kesalahan_data" => $kesalahan_data,
             "tgl_closing" => $tgl_closing,
             "nama_closing" => $nama_closing,
             "no_hp" => $no_hp,
@@ -156,7 +170,7 @@ class Closing_model extends MY_Model {
                 "nama_varian" => $varian['nama_varian'],
                 "produk" => $varian['produk'],
                 "qty" => $qty[$i],
-                "harga" => $varian['harga'],
+                "komisi" => $varian['komisi'],
             ];
 
             $query = $this->add_data("detail_closing", $data);
@@ -241,9 +255,13 @@ class Closing_model extends MY_Model {
                             '.tablerIcon("settings", "").'
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" target="_blank" href="'.base_url().'closing/detail/$2" data-id="$1">
+                            <a class="dropdown-item detailClosing" data-bs-toggle="modal" href="#detailClosing" data-id="$1">
                                 '.tablerIcon("info-circle", "me-1").'
                                 Detail Closing
+                            </a>
+                            <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
+                                '.tablerIcon("message-circle", "me-1").'
+                                Komen
                             </a>
                             <a class="dropdown-item bukaArsipClosing" href="javascript:void(0)" data-id="$1">
                                 '.tablerIcon("archive", "me-1").'
@@ -258,9 +276,13 @@ class Closing_model extends MY_Model {
                             '.tablerIcon("settings", "").'
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" target="_blank" href="'.base_url().'closing/detail/$2" data-id="$1">
+                            <a class="dropdown-item detailClosing" data-bs-toggle="modal" href="#detailClosing" data-id="$1">
                                 '.tablerIcon("info-circle", "me-1").'
                                 Detail Closing
+                            </a>
+                            <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
+                                '.tablerIcon("message-circle", "me-1").'
+                                Komen
                             </a>
                             <a class="dropdown-item arsipClosing" href="javascript:void(0)" data-id="$1">
                                 '.tablerIcon("archive", "me-1").'
@@ -297,6 +319,10 @@ class Closing_model extends MY_Model {
                         <a class="dropdown-item" target="_blank" href="'.base_url().'closing/detail/$2" data-id="$1">
                             '.tablerIcon("info-circle", "me-1").'
                             Detail Closing
+                        </a>
+                        <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
+                            '.tablerIcon("message-circle", "me-1").'
+                            Komen
                         </a>
                         <a class="dropdown-item arsipClosing" href="javascript:void(0)" data-id="$1">
                             '.tablerIcon("archive", "me-1").'
@@ -356,6 +382,43 @@ class Closing_model extends MY_Model {
 
         if($query) return 1;
         else return 0;
+    }
+
+    public function add_komen(){
+        $id_closing = $this->input->post("id_closing");
+        $komen = $this->input->post("komen");
+        $id_admin = $this->session->userdata('id_admin');
+        $table = "admin";
+
+        $data = [
+            "id_closing" => $id_closing,
+            "id_user" => $id_admin,
+            "nama_user" => "Admin",
+            "table_user" => $table,
+            "komen" => $komen
+        ];
+
+        $query = $this->add_data("komen_closing", $data);
+
+        if($query) return 1;
+        else return 0;
+    }
+
+    public function list_komen(){
+        $id_closing = $this->input->post("id_closing");
+
+        $komen = $this->get_all("komen_closing", ["id_closing" => $id_closing]);
+
+        $data['komen'] = [];
+        foreach ($komen as $i => $komen) {
+            $data['komen'][$i] = $komen;
+            $data['komen'][$i]['tgl_input'] = date("d-m-y h:i", strtotime($komen['tgl_input']));
+        }
+
+        $data['closing'] = $this->get_one("closing", ["id_closing" => $id_closing]);
+        $data['closing']['produk_closing'] = produk_closing($data['closing']['id_closing']);
+
+        return $data;
     }
 
 }
