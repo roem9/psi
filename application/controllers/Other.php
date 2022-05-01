@@ -41,6 +41,11 @@ class Other extends MY_Controller {
         echo $output;
     }
 
+    public function reset_password_cs(){
+        $data = $this->other->reset_password_cs();
+        echo json_encode($data);
+    }
+
     public function gudang(){
         $data['title'] = 'List Gudang';
         $data['menu'] = "Other";

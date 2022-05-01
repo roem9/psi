@@ -113,3 +113,40 @@ $("#detailCs .btnEdit").click(function(){
         }
     })
 })
+
+// reset password
+$(document).on("click", ".resetPassword", function(){
+    let id_cs = $(this).data("id");
+
+    Swal.fire({
+        icon: 'question',
+        text: 'Yakin akan mereset password cs?',
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak'
+    }).then(function (result) {
+        if (result.value) {
+            data = {id_cs: id_cs}
+            let result = ajax(url_base+"other/reset_password_cs", "POST", data);
+
+            if(result == 1){
+                loadData();
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    text: 'Berhasil mereset password cs',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'terjadi kesalahan, silahkan mulai ulang halaman'
+                })
+            }
+        }
+    })
+})

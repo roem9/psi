@@ -54,10 +54,24 @@ class Other_model extends MY_Model {
                             '.tablerIcon("info-circle", "me-1").'
                             Detail CS
                         </a>
+                        <a class="dropdown-item resetPassword" href="javascript:void(0)" data-id="$1">
+                            '.tablerIcon("refresh-alert", "me-1").'
+                            Reset Password
+                        </a>
                     </div>
                     </span>', 'id_cs');
 
         return $this->datatables->generate();
+    }
+
+    public function reset_password_cs(){
+        $id_cs = $this->input->post("id_cs");
+        $cs= $this->get_one("cs", ["id_cs" => $id_cs]);
+
+        $query = $this->edit_data("cs", ["id_cs" => $id_cs], ["password" => md5($cs['username'])]);
+
+        if($query) return 1;
+        else return 0;
     }
 
     public function add_gudang(){
