@@ -163,6 +163,11 @@ class Closing extends MY_Controller {
         echo json_encode($data);
     }
 
+    public function list_komplain(){
+        $data = $this->closing->list_komplain();
+        echo json_encode($data);
+    }
+
     public function downloadLaporan(){
         $spreadsheet = new Spreadsheet;
 

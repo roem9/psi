@@ -259,9 +259,17 @@ class Closing_model extends MY_Model {
                                 '.tablerIcon("info-circle", "me-1").'
                                 Detail Closing
                             </a>
+                            <a class="dropdown-item resend" data-bs-toggle="modal" href="#addClosing" data-id="$1">
+                                '.tablerIcon("repeat", "me-1").'
+                                Resend
+                            </a>
                             <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
                                 '.tablerIcon("message-circle", "me-1").'
                                 Komen
+                            </a>
+                            <a class="dropdown-item komplainClosing" data-bs-toggle="modal" href="#komplainClosing" data-id="$1">
+                                '.tablerIcon("alert-octagon", "me-1").'
+                                Komplain
                             </a>
                             <a class="dropdown-item bukaArsipClosing" href="javascript:void(0)" data-id="$1">
                                 '.tablerIcon("archive", "me-1").'
@@ -280,9 +288,17 @@ class Closing_model extends MY_Model {
                                 '.tablerIcon("info-circle", "me-1").'
                                 Detail Closing
                             </a>
+                            <a class="dropdown-item resend" data-bs-toggle="modal" href="#addClosing" data-id="$1">
+                                '.tablerIcon("repeat", "me-1").'
+                                Resend
+                            </a>
                             <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
                                 '.tablerIcon("message-circle", "me-1").'
                                 Komen
+                            </a>
+                            <a class="dropdown-item komplainClosing" data-bs-toggle="modal" href="#komplainClosing" data-id="$1">
+                                '.tablerIcon("alert-octagon", "me-1").'
+                                Komplain
                             </a>
                             <a class="dropdown-item arsipClosing" href="javascript:void(0)" data-id="$1">
                                 '.tablerIcon("archive", "me-1").'
@@ -320,9 +336,17 @@ class Closing_model extends MY_Model {
                             '.tablerIcon("info-circle", "me-1").'
                             Detail Closing
                         </a>
+                        <a class="dropdown-item resend" data-bs-toggle="modal" href="#addClosing" data-id="$1">
+                            '.tablerIcon("repeat", "me-1").'
+                            Resend
+                        </a>
                         <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
                             '.tablerIcon("message-circle", "me-1").'
                             Komen
+                        </a>
+                        <a class="dropdown-item komplainClosing" data-bs-toggle="modal" href="#komplainClosing" data-id="$1">
+                            '.tablerIcon("alert-octagon", "me-1").'
+                            Komplain
                         </a>
                         <a class="dropdown-item arsipClosing" href="javascript:void(0)" data-id="$1">
                             '.tablerIcon("archive", "me-1").'
@@ -413,6 +437,32 @@ class Closing_model extends MY_Model {
         foreach ($komen as $i => $komen) {
             $data['komen'][$i] = $komen;
             $data['komen'][$i]['tgl_input'] = date("d-m-y h:i", strtotime($komen['tgl_input']));
+        }
+
+        $data['closing'] = $this->get_one("closing", ["id_closing" => $id_closing]);
+        $data['closing']['produk_closing'] = produk_closing($data['closing']['id_closing']);
+
+        return $data;
+    }
+
+    public function list_komplain(){
+        $id_closing = $this->input->post("id_closing");
+
+        $komplain = $this->get_all("komplain_closing", ["id_closing" => $id_closing]);
+
+        $data['komplain'] = [];
+        foreach ($komplain as $i => $komplain) {
+            $data['komplain'][$i] = $komplain;
+            $data['komplain'][$i]['tgl_input'] = date("d-m-y", strtotime($komplain['tgl_input']));
+            $data['komplain'][$i]['tgl_tertangani'] = date("d-m-y", strtotime($komplain['tgl_tertangani']));
+            if($komplain['status'] == "Selesai"){
+                $tgl1 = new DateTime(date("Y-m-d", strtotime($komplain['tgl_input'])));
+                $tgl2 = new DateTime($komplain['tgl_tertangani']);
+                $durasi = date_diff($tgl1, $tgl2);
+    
+                $data['komplain'][$i]['durasi'] = $durasi->d . " hari";
+            }
+            
         }
 
         $data['closing'] = $this->get_one("closing", ["id_closing" => $id_closing]);

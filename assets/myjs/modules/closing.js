@@ -316,7 +316,7 @@ $(document).on("click", ".detailClosing", function(){
     let id_closing = $(this).data("id");
     let result = ajax(url_base+"closing/detail_closing", "POST", {id_closing:id_closing});
 
-    console.log(result);
+    
 
     let  form = "#formDetailClosing";
 
@@ -356,7 +356,7 @@ $(document).on("click", ".detailClosing", function(){
     let choice = `<option value="">Pilih Rekomendasi Kode Pos</option>`;
     result = ajax(url_base+"closing/get_rekomendasi_kode_pos", "POST", {kelurahan:kelurahan, kecamatan:kecamatan});
 
-    console.log(result);
+    
 
     result.forEach(data => {
         choice += `<option value="`+data.provinsi+`|`+data.kota_kabupaten+`|`+data.kecamatan+`|`+data.kelurahan+`|`+data.kode_pos+`">`+data.kecamatan+` `+data.kelurahan+` `+data.kode_pos+`</option>`
@@ -746,3 +746,120 @@ function loadKomen(id_closing) {
 
     $("#list_komen").html(html_komen);
 }
+
+$(document).on("click", ".komplainClosing", function(){
+    var id_closing = $(this).data("id");
+
+    loadKomplain(id_closing);
+})
+
+function loadKomplain(id_closing) {
+    let result = ajax(url_base+"closing/list_komplain", "POST", {id_closing:id_closing});
+    
+    $("#komplainClosing [name='id_closing'").val(result.closing.id_closing);
+    $("#komplainClosing #nama_closing").html("<b>"+result.closing.nama_closing+"</b>");
+    $("#komplainClosing #produk_closing").html("<b>"+result.closing.produk_closing+"</b>");
+
+    html_komplain = "";
+    result.komplain.forEach(komplain => {
+
+        if(komplain.status == "Sedang Ditangani"){
+            html_komplain += `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p>
+                            <b>`+komplain.tgl_input+`</b><br>
+                            `+komplain.komplain+`
+                            <div class="form-floating mb-3">
+                                <select name="status" class="form form-control form-control-sm required" readonly>
+                                    <option value="`+komplain.id_komplain+`|Sedang Ditangani" selected>Sedang Ditangani</option>
+                                    <option value="`+komplain.id_komplain+`|Selesai">Selesai</option>
+                                </select>
+                                <label class="col-form-label">Status</label>
+                            </div>
+                        </p>
+                    </div>
+                </div>`;
+        } else {
+            html_komplain += `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p>
+                        <b>`+komplain.tgl_input+` s.d `+komplain.tgl_tertangani+` (`+komplain.durasi+`)</b><br>
+                        `+komplain.komplain+`
+                        <div class="form-floating mb-3">
+                            <select name="status" class="form form-control form-control-sm required" readonly>
+                                <option value="`+komplain.id_komplain+`|Sedang Ditangani">Sedang Ditangani</option>
+                                <option value="`+komplain.id_komplain+`|Selesai" selected>Selesai</option>
+                            </select>
+                            <label class="col-form-label">Status</label>
+                        </div>
+                    </p>
+                </div>
+            </div>
+            `;
+        }
+    });
+
+    $("#list_komplain").html(html_komplain);
+}
+
+$(document).on("click", ".resend", function(){
+    $("#btnSimpan").show();
+
+    id_urut = 0;
+    nomor_urut = 0;
+
+    let id_closing = $(this).data("id");
+    let result = ajax(url_base+"closing/detail_closing", "POST", {id_closing:id_closing});
+
+    
+
+    let  form = "#formClosing";
+
+    $.each(result.closing, function(key, value){
+        $(form+" [name='"+key+"']").val(value)
+    })
+
+    $(form+" [name='tgl_closing']").val("")
+
+    html_detail = "";
+
+    result.detail_closing.forEach(detail => {
+        id_urut++;
+        nomor_urut++;
+
+        html_detail += `
+        <tr id="`+id_urut+`">
+            <td>
+                <input type="hidden" name="id_varian" value="`+detail.id_varian+`">
+                <span class="urut">`+nomor_urut+`</span>
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="hapusClosing text-danger" data-form="`+form+`" data-id="`+id_urut+`" data-nama="`+detail.nama_varian+`">`+detail.nama_varian+`</a>
+            </td>
+            <td class="text-right">
+                <input type="number" name="qty" class="form form-control form-control-md required" value="`+detail.qty+`">
+            </td>
+        </tr>
+        `
+    })
+
+    $("#listOfClosing").html(html_detail);
+
+    listOfClosing('varian');
+
+    let kelurahan = $(form+" [name='kelurahan']").val();
+    let kecamatan = $(form+" [name='kecamatan']").val();
+
+    let choice = `<option value="">Pilih Rekomendasi Kode Pos</option>`;
+    result = ajax(url_base+"closing/get_rekomendasi_kode_pos", "POST", {kelurahan:kelurahan, kecamatan:kecamatan});
+
+    
+
+    result.forEach(data => {
+        choice += `<option value="`+data.provinsi+`|`+data.kota_kabupaten+`|`+data.kecamatan+`|`+data.kelurahan+`|`+data.kode_pos+`">`+data.kecamatan+` `+data.kelurahan+` `+data.kode_pos+`</option>`
+    });
+
+    $("[name='rekomendasi_kode_pos']").html(choice)
+})
