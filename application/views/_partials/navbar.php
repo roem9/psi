@@ -60,6 +60,9 @@
                     </span>
                 </a>
                 <div class="dropdown-menu">
+                    <a class="dropdown-item" id="bayarClosing" href="<?= base_url()?>closing/bayar" >
+                        Bayar Closing
+                    </a>
                     <a class="dropdown-item" id="listClosing" href="<?= base_url()?>closing/list" >
                         List Closing
                     </a>

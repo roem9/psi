@@ -56,6 +56,7 @@ class Closing_model extends MY_Model {
             "catatan" => $catatan,
             "nama_gudang" => $nama_gudang,
             "id_gudang" => $gudang['id_gudang'],
+            "status_stok" => "Belum Dikirim"
         ];
 
         $duplikat = $this->get_one("closing", ["no_hp" => $no_hp, "produk" => $produk, "nominal_transaksi" => $nominal_transaksi, "nama_closing" => $nama_closing, "tgl_closing" => $tgl_closing]);
@@ -75,6 +76,7 @@ class Closing_model extends MY_Model {
                     "nama_varian" => $varian['nama_varian'],
                     "produk" => $varian['produk'],
                     "qty" => $qty[$i],
+                    "harga" => $varian['harga'],
                     "komisi" => $varian['komisi'],
                 ];
     
@@ -170,6 +172,7 @@ class Closing_model extends MY_Model {
                 "nama_varian" => $varian['nama_varian'],
                 "produk" => $varian['produk'],
                 "qty" => $qty[$i],
+                "harga" => $varian['harga'],
                 "komisi" => $varian['komisi'],
             ];
 
@@ -276,7 +279,7 @@ class Closing_model extends MY_Model {
                                 Buka Arsip
                             </a>
                         </div>
-                        </span>', 'id_closing, md5(id_closing)');
+                        </span>', 'id_closing, md5(id_closing), nama_closing');
         } else {
             $this->datatables->add_column('menu','
                         <span class="dropdown">
@@ -305,7 +308,7 @@ class Closing_model extends MY_Model {
                                 Arsipkan
                             </a>
                         </div>
-                        </span>', 'id_closing, md5(id_closing)');
+                        </span>', 'id_closing, md5(id_closing), nama_closing');
         }
 
         return $this->datatables->generate();
@@ -354,6 +357,57 @@ class Closing_model extends MY_Model {
                         </a>
                     </div>
                     </span>', 'id_closing, md5(id_closing)');
+
+        return $this->datatables->generate();
+    }
+
+    public function load_bayar_closing(){
+        $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status, status_lunas');
+        $this->datatables->from("closing");
+        $this->db->order_by("tgl_closing", "desc");
+
+        $this->datatables->where(["hapus" => "0", "status" => "Delivered"]);
+
+        $this->datatables->edit_column("status", "<a href='#statusClosing' data-id='$3' data-bs-toggle='modal' class='badge statusClosing' style='background-color: $2'>$1</a>", "status, warna_status(status), id_closing");
+        $this->datatables->add_column("stok", "$1", "stok_varian(id_closing)");
+        $this->datatables->add_column("produk_closing", "$1", "produk_closing(id_closing)");
+        $this->datatables->add_column("durasi", "$1", "durasi(tgl_input, tgl_closing, tgl_delivery, tgl_ubah_status)");
+        $this->datatables->add_column("status_input", "$1", "status_input(tgl_input, tgl_closing)");
+        $this->datatables->add_column("status_delivered", "$1", "status_delivered(tgl_delivery, tgl_ubah_status)");
+
+        
+        $this->datatables->add_column('menu','
+                    <span class="dropdown">
+                    <button class="btn align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
+                        '.tablerIcon("settings", "").'
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item tandaiLunas" data-id="$1" data-nama="$3">
+                            '.tablerIcon("cash", "me-1").'
+                            Tandai Lunas
+                        </a>
+                        <a class="dropdown-item" target="_blank" href="'.base_url().'closing/detail/$2" data-id="$1">
+                            '.tablerIcon("info-circle", "me-1").'
+                            Detail Closing
+                        </a>
+                        <a class="dropdown-item resend" data-bs-toggle="modal" href="#addClosing" data-id="$1">
+                            '.tablerIcon("repeat", "me-1").'
+                            Resend
+                        </a>
+                        <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
+                            '.tablerIcon("message-circle", "me-1").'
+                            Komen
+                        </a>
+                        <a class="dropdown-item komplainClosing" data-bs-toggle="modal" href="#komplainClosing" data-id="$1">
+                            '.tablerIcon("alert-octagon", "me-1").'
+                            Komplain
+                        </a>
+                        <a class="dropdown-item arsipClosing" href="javascript:void(0)" data-id="$1">
+                            '.tablerIcon("archive", "me-1").'
+                            Arsipkan
+                        </a>
+                    </div>
+                    </span>', 'id_closing, md5(id_closing), nama_closing');
 
         return $this->datatables->generate();
     }

@@ -83,6 +83,11 @@ class Other extends MY_Controller {
         echo $output;
     }
 
+    public function reset_password_gudang(){
+        $data = $this->other->reset_password_gudang();
+        echo json_encode($data);
+    }
+
     public function kpi(){
         $data['title'] = 'List KPI';
         $data['menu'] = "Other";

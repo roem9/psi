@@ -84,6 +84,10 @@
                         <input type="text" name="nama_gudang" class="form form-control form-control-sm required">
                         <label class="col-form-label">Nama Gudang</label>
                     </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" name="username" class="form form-control form-control-sm required">
+                        <label class="col-form-label">Username</label>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -108,6 +112,10 @@
                 <div class="form-floating mb-3">
                     <input type="text" name="nama_gudang" class="form form-control form-control-sm required">
                     <label class="col-form-label">Nama Gudang</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" name="username" class="form form-control form-control-sm required">
+                    <label class="col-form-label">Username</label>
                 </div>
             </div>
             <div class="modal-footer">

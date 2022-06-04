@@ -15,6 +15,7 @@ var datatable = $('#dataTable').DataTable({
     ajax: {"url": url_base+"other/load_gudang", "type": "POST"},
     columns: [
         {"data": "nama_gudang"},
+        {"data": "username"},
         {"data": "menu"},
     ],
     order: [[0, 'asc']],

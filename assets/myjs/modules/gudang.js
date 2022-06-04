@@ -113,3 +113,40 @@ $("#detailGudang .btnEdit").click(function(){
         }
     })
 })
+
+// reset password
+$(document).on("click", ".resetPassword", function(){
+    let id_gudang = $(this).data("id");
+
+    Swal.fire({
+        icon: 'question',
+        text: 'Yakin akan mereset password gudang?',
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak'
+    }).then(function (result) {
+        if (result.value) {
+            data = {id_gudang: id_gudang}
+            let result = ajax(url_base+"other/reset_password_gudang", "POST", data);
+
+            if(result == 1){
+                loadData();
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    text: 'Berhasil mereset password gudang',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'terjadi kesalahan, silahkan mulai ulang halaman'
+                })
+            }
+        }
+    })
+})

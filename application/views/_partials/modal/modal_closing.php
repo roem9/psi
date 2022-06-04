@@ -153,6 +153,7 @@
                                 <select name="pengirim" class="form form-control form-control-sm required">
                                     <option value="">Pilih Pengirim</option>
                                     <option value="Mengantar">Mengantar</option>
+                                    <option value="Bos COD">Bos COD</option>
                                     <option value="Marketplace">Marketplace</option>
                                     <option value="Yubi">Yubi</option>
                                 </select>
@@ -345,6 +346,7 @@
                                 <select name="pengirim" class="form form-control form-control-sm required">
                                     <option value="">Pilih Pengirim</option>
                                     <option value="Mengantar">Mengantar</option>
+                                    <option value="Bos COD">Bos COD</option>
                                     <option value="Marketplace">Marketplace</option>
                                     <option value="Yubi">Yubi</option>
                                 </select>

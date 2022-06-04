@@ -39,7 +39,8 @@
                             <table id="dataTable" class="table card-table table-vcenter text-dark">
                                 <thead>
                                     <tr>
-                                        <th class="text-dark desktopmobile-l mobile-p tablet-l tablet-p" style="font-size: 11px">Nama Gudang</th>
+                                        <th class="text-dark desktopmobile-l mobile-p tablet-l tablet-p w-1 text-nowrap" style="font-size: 11px">Nama Gudang</th>
+                                        <th class="text-dark desktopmobile-l mobile-p tablet-l tablet-p" style="font-size: 11px">Username</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Tindakan</th>
                                     </tr>
                                 </thead>

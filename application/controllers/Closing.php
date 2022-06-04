@@ -5,6 +5,24 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Closing extends MY_Controller {
+    public function bayar(){
+        $data['title'] = 'Bayar Closing';
+        $data['menu'] = 'Closing';
+        $data['dropdown'] = 'bayarClosing';
+
+        $data['modal'] = ["modal_closing"];
+
+        $data['js'] = [
+            "ajax.js",
+            "function.js",
+            "helper.js",
+            "load_data/closing_bayar_reload.js",
+            "modules/closing.js",
+        ];
+
+        $this->load->view("pages/closing/bayar", $data);
+    }
+
     public function list(){
         $data['title'] = 'List Closing';
         $data['menu'] = 'Closing';
@@ -86,6 +104,12 @@ class Closing extends MY_Controller {
     public function load_closing_perhatian($table){
         header('Content-Type: application/json');
         $output = $this->closing->load_closing_perhatian($table);
+        echo $output;
+    }
+
+    public function load_bayar_closing(){
+        header('Content-Type: application/json');
+        $output = $this->closing->load_bayar_closing();
         echo $output;
     }
 

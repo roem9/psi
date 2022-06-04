@@ -108,8 +108,12 @@
                     <label class="col-form-label">Komisi</label>
                 </div>
                 <label class="form-check">
-                    <input class="form-check-input" type="checkbox" name="checkbox" value="yes">
+                    <input class="form-check-input" type="checkbox" name="checkbox_komisi" value="yes">
                     <span class="form-check-label">Terapkan komisi untuk semua produk yang sama</span>
+                </label>
+                <label class="form-check">
+                    <input class="form-check-input" type="checkbox" name="checkbox_harga" value="yes">
+                    <span class="form-check-label">Terapkan harga untuk semua produk yang sama</span>
                 </label>
             </div>
             <div class="modal-footer">

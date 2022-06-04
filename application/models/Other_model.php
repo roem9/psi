@@ -110,7 +110,7 @@ class Other_model extends MY_Model {
     }
 
     public function load_gudang(){
-        $this->datatables->select('id_gudang, nama_gudang');
+        $this->datatables->select('id_gudang, nama_gudang, username');
         $this->datatables->from('gudang');
         // $this->datatables->where("hapus", "0");
         $this->datatables->add_column('menu','
@@ -123,10 +123,24 @@ class Other_model extends MY_Model {
                             '.tablerIcon("info-circle", "me-1").'
                             Detail Gudang
                         </a>
+                        <a class="dropdown-item resetPassword" href="javascript:void(0)" data-id="$1">
+                            '.tablerIcon("refresh-alert", "me-1").'
+                            Reset Password
+                        </a>
                     </div>
                     </span>', 'id_gudang');
 
         return $this->datatables->generate();
+    }
+
+    public function reset_password_gudang(){
+        $id_gudang = $this->input->post("id_gudang");
+        $gudang= $this->get_one("gudang", ["id_gudang" => $id_gudang]);
+
+        $query = $this->edit_data("gudang", ["id_gudang" => $id_gudang], ["password" => md5($gudang['username'])]);
+
+        if($query) return 1;
+        else return 0;
     }
 
     public function add_kpi(){
