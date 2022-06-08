@@ -23,6 +23,7 @@ var datatable = $('#dataTable').DataTable({
             $(row).addClass("text-nowrap")
             return `Rp `+formatRupiah(iDisplayIndex.nominal);
         }},
+        {"data": "catatan"},
         {"data": "menu"},
     ],
     order: [[0, 'asc']],

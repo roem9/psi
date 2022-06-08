@@ -7,11 +7,23 @@ class Other_model extends MY_Model {
 
     public function add_cs(){
         $data = [];
+        
+        $data['password'] = md5($this->input->post("username"));
         foreach ($_POST as $key => $value) {
             $data[$key] = $this->input->post($key);
         }
 
         $query = $this->add_data("cs", $data);
+
+        $data = [
+            "id_cs" => $query,
+            "periode" => date('Y-m-d'),
+            "tgl_awal" => date('Y-m-d'),
+            "tgl_akhir" => date('Y-m-d')
+        ];
+
+        $query = $this->add_data("setting_cs", $data);
+
         if($query) return 1;
         else return 0;
     }
@@ -230,6 +242,7 @@ class Other_model extends MY_Model {
             "nama_cs" => $cs['nama_cs'],
             "tgl_pencairan" => $this->input->post("tgl_pencairan"),
             "periode" => $periode,
+            "catatan" => $this->input->post("catatan"),
             "nominal" => rupiah_to_int($this->input->post("nominal"))
         ];
 
@@ -254,6 +267,7 @@ class Other_model extends MY_Model {
             "nama_cs" => $cs['nama_cs'],
             "tgl_pencairan" => $this->input->post("tgl_pencairan"),
             "periode" => $periode,
+            "catatan" => $this->input->post("catatan"),
             "nominal" => rupiah_to_int($this->input->post("nominal"))
         ];
 
@@ -274,7 +288,7 @@ class Other_model extends MY_Model {
     }
 
     public function load_pencairan(){
-        $this->datatables->select('id_pencairan, id_cs, nama_cs, tgl_pencairan, periode, nominal, tgl_input');
+        $this->datatables->select('id_pencairan, id_cs, nama_cs, tgl_pencairan, periode, nominal, tgl_input, catatan');
         $this->datatables->from('pencairan_cs');
         $this->datatables->add_column('periode_pencairan', '$1', 'periode(periode)');
         $this->datatables->add_column('menu','

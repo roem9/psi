@@ -301,6 +301,10 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-floating mb-3">
+                        <textarea name="catatan" class="form form-control required" data-bs-toggle="autosize"></textarea>
+                        <label for="" class="col-form-label">Catatan</label>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -373,6 +377,10 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea name="catatan" class="form form-control required" data-bs-toggle="autosize"></textarea>
+                        <label for="" class="col-form-label">Catatan</label>
                     </div>
                 </form>
             </div>

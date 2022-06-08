@@ -43,6 +43,7 @@
                                         <th class="text-dark desktop" style="font-size: 11px">Periode</th>
                                         <th class="text-dark desktop mobile-l mobile-p tablet-l tablet-p" style="font-size: 11px">Nama CS</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Nominal</th>
+                                        <th class="text-dark desktop" style="font-size: 11px">Catatan</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Action</th>
                                     </tr>
                                 </thead>
