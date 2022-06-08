@@ -109,6 +109,9 @@
                     <a class="dropdown-item" target="_blank" href="<?= base_url()?>closing/view" >
                         View Laporan
                     </a>
+                    <a class="dropdown-item" href="#laporanAdvertiser" data-bs-toggle="modal" >
+                        Laporan Advertiser
+                    </a>
                 </div>
             </li>
 

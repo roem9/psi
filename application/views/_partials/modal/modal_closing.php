@@ -149,7 +149,7 @@
                                 </select>
                                 <label class="col-form-label">Jenis Customer</label>
                             </div>
-                            <div class="form-floating mb-3">
+                            <!-- <div class="form-floating mb-3">
                                 <select name="pengirim" class="form form-control form-control-sm required">
                                     <option value="">Pilih Pengirim</option>
                                     <option value="Mengantar">Mengantar</option>
@@ -158,7 +158,7 @@
                                     <option value="Yubi">Yubi</option>
                                 </select>
                                 <label class="col-form-label">Dikirim Menggunakan</label>
-                            </div>
+                            </div> -->
                             <div class="form-floating mb-3">
                                 <select name="nama_gudang" class="form form-control form-control-sm required">
                                     <option value="">Pilih Gudang</option>
@@ -342,7 +342,7 @@
                                 </select>
                                 <label class="col-form-label">Jenis Customer</label>
                             </div>
-                            <div class="form-floating mb-3">
+                            <!-- <div class="form-floating mb-3">
                                 <select name="pengirim" class="form form-control form-control-sm required">
                                     <option value="">Pilih Pengirim</option>
                                     <option value="Mengantar">Mengantar</option>
@@ -351,7 +351,7 @@
                                     <option value="Yubi">Yubi</option>
                                 </select>
                                 <label class="col-form-label">Dikirim Menggunakan</label>
-                            </div>
+                            </div> -->
                             <div class="form-floating mb-3">
                                 <select name="nama_gudang" class="form form-control form-control-sm required">
                                     <option value="">Pilih Gudang</option>

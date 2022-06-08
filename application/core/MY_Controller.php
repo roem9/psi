@@ -13,6 +13,10 @@ class MY_Controller extends CI_Controller {
             $this->load->model($model . '_model', $model, true);
         // }
 
+        ini_set('xdebug.var_display_max_depth', '10');
+        ini_set('xdebug.var_display_max_children', '256');
+        ini_set('xdebug.var_display_max_data', '1024');
+        
         if(!$this->session->userdata('psi')){
             $this->session->set_flashdata('pesan', '
                 <div class="alert alert-important alert-danger alert-dismissible" role="alert">
