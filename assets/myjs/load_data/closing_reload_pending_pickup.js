@@ -1,4 +1,4 @@
-var url = url_base+"closing/load_closing_perhatian/pendingpickup";
+var url = url_base+"closing/load_pending_pickup";
 
 var datatable = $('#dataTable').DataTable({ 
     initComplete: function() {
@@ -20,7 +20,7 @@ var datatable = $('#dataTable').DataTable({
             return iDisplayIndex.tgl_closing
         }},
         {"data": "nama_closing", className : "text-wrap", render : function(row, data, iDisplayIndex){
-            return iDisplayIndex.nama_closing + iDisplayIndex.status_input;
+            return iDisplayIndex.nama_closing + iDisplayIndex.status_input + `<br>` + iDisplayIndex.no_hp;
         }},
         {"data": "produk_closing", render : function(row, data, iDisplayIndex){
             return iDisplayIndex.produk_closing +`<br><span style="color: #118C4F"><b>`+ formatRupiah(iDisplayIndex.nominal_transaksi, "Rp.") +`</b></span>`
@@ -34,9 +34,13 @@ var datatable = $('#dataTable').DataTable({
         {"data": "status", className:'text-nowrap', render : function(row, data, iDisplayIndex){
             return iDisplayIndex.status + iDisplayIndex.status_delivered;
         }},
+        {"data": "status_stok", className:'text-nowrap', render : function(row, data, iDisplayIndex){
+            return iDisplayIndex.status_stok;
+        }},
         {"data": "menu"},
         {"data": "jenis_closing"},
         {"data": "catatan"},
+        {"data": "no_hp"},
     ],
     order: [[0, 'desc']],
     rowCallback: function(row, data, iDisplayIndex) {
@@ -47,7 +51,7 @@ var datatable = $('#dataTable').DataTable({
     },
     "columnDefs": [
     { "searchable": false, "targets": [""] },  // Disable search on first and last columns
-    { "targets": [2, 5, 7], "orderable": false},
+    { "targets": [2, 5, 6, 7, 8], "orderable": false},
     ],
     "rowReorder": {
         "selector": 'td:nth-child(0)'

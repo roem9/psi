@@ -113,6 +113,20 @@ class Produk extends MY_Controller {
         $data = $this->artikel->arsip_produk();
         echo json_encode($data);
     }
+
+    public function add_harga_suplier(){
+        $this->db->select("*");
+        $this->db->from("detail_closing");
+        $this->db->group_by("id_varian");
+        $data = $this->db->get()->result_array();
+        
+        foreach ($data as $data) {
+            $varian = $this->produk->get_one("varian_produk", ["id_varian" => $data['id_varian']]);
+            $this->produk->edit_data("detail_closing", ["id_varian" => $data['id_varian']], ["harga_suplier" => $varian['harga_suplier']]);
+        }
+
+        echo "sukses";
+    }
 }
 
 /* End of file Produk.php */

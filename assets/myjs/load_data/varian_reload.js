@@ -32,6 +32,7 @@ var datatable = $('#dataTable').DataTable({
             if(jQuery.browser.mobile == true) return data
             else return "<center>"+data+"</center>"
         }},
+        {"data": "harga_suplier", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp ' ) },
         {"data": "harga", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp ' ) },
         {"data": "komisi", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp ' ) },
         {"data": "menu"},
@@ -45,7 +46,7 @@ var datatable = $('#dataTable').DataTable({
     },
     "columnDefs": [
     { "searchable": false, "targets": [""] },  // Disable search on first and last columns
-    { "targets": [3, 6], "orderable": false},
+    { "targets": [3, 7], "orderable": false},
     ],
     "rowReorder": {
         "selector": 'td:nth-child(0)'

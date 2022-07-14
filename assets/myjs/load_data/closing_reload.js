@@ -26,7 +26,7 @@ var datatable = $('#dataTable').DataTable({
             return iDisplayIndex.tgl_closing
         }},
         {"data": "nama_closing", className : "text-wrap", render : function(row, data, iDisplayIndex){
-            return iDisplayIndex.nama_closing + iDisplayIndex.status_input;
+            return iDisplayIndex.nama_closing + iDisplayIndex.status_input + `<br>` + iDisplayIndex.no_hp;
         }},
         {"data": "produk_closing", render : function(row, data, iDisplayIndex){
             return iDisplayIndex.produk_closing +`<br><span style="color: #118C4F"><b>`+ formatRupiah(iDisplayIndex.nominal_transaksi, "Rp.") +`</b></span>`
@@ -43,6 +43,7 @@ var datatable = $('#dataTable').DataTable({
         {"data": "menu"},
         {"data": "jenis_closing"},
         {"data": "catatan"},
+        {"data": "no_hp"},
     ],
     rowCallback: function(row, data, iDisplayIndex) {
         var info = this.fnPagingInfo();

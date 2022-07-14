@@ -76,7 +76,7 @@ class Produk_model extends MY_Model {
     }
 
     public function load_varian($status){
-        $this->datatables->select('id_varian, kode_varian, nama_varian, produk, harga, komisi, tgl_input, hapus');
+        $this->datatables->select('id_varian, kode_varian, nama_varian, produk, harga, harga_suplier, komisi, tgl_input, hapus');
         $this->datatables->from('varian_produk');
 
         $this->datatables->add_column('stok','$1', 'stok_varian(id_varian)');
@@ -124,7 +124,9 @@ class Produk_model extends MY_Model {
     }
 
     public function add_varian(){
+        $_POST['harga_suplier'] = rupiah_to_int($_POST['harga_suplier']);
         $_POST['harga'] = rupiah_to_int($_POST['harga']);
+        $_POST['komisi'] = rupiah_to_int($_POST['komisi']);
         $data = [];
         foreach ($_POST as $key => $value) {
             $data[$key] = $this->input->post($key);
@@ -145,12 +147,16 @@ class Produk_model extends MY_Model {
     public function edit_varian(){
         // edit seluruh artikel dengan kondisi memiliki nama artikel dan produk yang sama
         $id_varian = $this->input->post("id_varian");
+        $all_harga = $this->input->post("all_harga");
         $all_komisi = $this->input->post("all_komisi");
+        $all_suplier = $this->input->post("all_suplier");
         
         unset($_POST['all_komisi']);
+        unset($_POST['all_harga']);
+        unset($_POST['all_suplier']);
         unset($_POST['id_varian']);
-
-
+        
+        $_POST['harga_suplier'] = rupiah_to_int($_POST['harga_suplier']);
         $_POST['harga'] = rupiah_to_int($_POST['harga']);
         $_POST['komisi'] = rupiah_to_int($_POST['komisi']);
 
@@ -162,6 +168,16 @@ class Produk_model extends MY_Model {
         // jika all_komisi = Yes ubah semua komisi jika produknya sama 
         if($all_komisi == "Yes"){
             $this->edit_data("varian_produk", ["produk" => $data['produk']], ["komisi" => $data['komisi']]);
+        }
+
+        // jika all_harga = Yes ubah semua harga jika produknya sama 
+        if($all_harga == "Yes"){
+            $this->edit_data("varian_produk", ["produk" => $data['produk']], ["harga" => $data['harga']]);
+        }
+
+        // jika all_harga = Yes ubah semua harga jika produknya sama 
+        if($all_suplier == "Yes"){
+            $this->edit_data("varian_produk", ["produk" => $data['produk']], ["harga_suplier" => $data['harga_suplier']]);
         }
 
         // ubah semua data varian pada detail closing

@@ -37,7 +37,8 @@ var datatable = $('#dataTable').DataTable({
         {"data": "menu"},
         {"data": "jenis_closing"},
         {"data": "catatan"},
-        {"data": "status_lunas"},
+        // {"data": "status_lunas"},
+        {"data": "no_hp"},
     ],
     rowCallback: function(row, data, iDisplayIndex) {
         var info = this.fnPagingInfo();

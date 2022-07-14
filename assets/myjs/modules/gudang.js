@@ -1,4 +1,3 @@
-// tambah gudang 
 $("#addGudang .btnTambah").click(function(){
     Swal.fire({
         icon: 'question',
@@ -24,7 +23,7 @@ $("#addGudang .btnTambah").click(function(){
                     text: 'lengkapi isi form terlebih dahulu'
                 })
             } else {
-                let result = ajax(url_base+"other/add_gudang", "POST", formData);
+                let result = ajax(url_base+"gudang/add_gudang", "POST", formData);
 
                 if(result == 1){
                     loadData();
@@ -56,7 +55,7 @@ $(document).on("click",".detailGudang", function(){
     let id_gudang = $(this).data("id");
 
     let data = {id_gudang: id_gudang};
-    let result = ajax(url_base+"other/get_gudang", "POST", data);
+    let result = ajax(url_base+"gudang/get_gudang", "POST", data);
     
     $.each(result, function(key, value){
         $(form+" [name='"+key+"']").val(value)
@@ -90,7 +89,7 @@ $("#detailGudang .btnEdit").click(function(){
                     text: 'lengkapi isi form terlebih dahulu'
                 })
             } else {
-                let result = ajax(url_base+"other/edit_gudang", "POST", formData);
+                let result = ajax(url_base+"gudang/edit_gudang", "POST", formData);
 
                 if(result == 1){
                     loadData();
@@ -128,7 +127,7 @@ $(document).on("click", ".resetPassword", function(){
     }).then(function (result) {
         if (result.value) {
             data = {id_gudang: id_gudang}
-            let result = ajax(url_base+"other/reset_password_gudang", "POST", data);
+            let result = ajax(url_base+"gudang/reset_password_gudang", "POST", data);
 
             if(result == 1){
                 loadData();

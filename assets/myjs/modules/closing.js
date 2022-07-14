@@ -272,7 +272,8 @@ $("#btnSimpan").click(function(){
                     $(form).trigger('reset');
                     $("[name='teks']").val("");
                     $("#listOfClosing").html("");
-                    listOfClosing();
+                    // listOfClosing();
+                    listOfClosing('varian');
 
                     Swal.fire({
                         position: 'center',
@@ -293,7 +294,8 @@ $("#btnSimpan").click(function(){
                     $(form).trigger('reset');
                     $("[name='teks']").val("");
                     $("#listOfClosing").html("");
-                    listOfClosing();
+                    // listOfClosing();
+                    listOfClosing('varian');
 
                     Swal.fire({
                         icon: 'error',

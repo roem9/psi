@@ -10,9 +10,37 @@
                 <div class="page-header d-print-none">
                 <div class="row align-items-center">
                     <div class="col">
-                    <h2 class="page-title">
-                        <?= $title?>
-                    </h2>
+                        <h2 class="page-title">
+                            <?= $title?>
+                        </h2>
+
+                        <span class="dropdown">
+                            <button class="btn align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
+                                <?= tablerIcon("menu-2", "me-2")?> Menu
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="<?= base_url()?>gudang/tagihan/<?= md5($gudang['id_gudang'])?>">
+                                    <?= tablerIcon("info-circle", "me-1")?>
+                                    Tagihan
+                                </a>
+                                <a class="dropdown-item" href="<?= base_url()?>gudang/listpenjualan/<?= md5($gudang['id_gudang'])?>">
+                                    <?= tablerIcon("coin", "me-1")?>
+                                    Semua Closing
+                                </a>
+                                <a class="dropdown-item" href="<?= base_url()?>gudang/pendingpickup/<?= md5($gudang['id_gudang'])?>">
+                                    <?= tablerIcon("clock", "me-1")?>
+                                    Pending Pickup
+                                </a>
+                                <a class="dropdown-item" href="<?= base_url()?>gudang/perluPerhatian/<?= md5($gudang['id_gudang'])?>">
+                                    <?= tablerIcon("alert-circle", "me-1")?>
+                                    Perlu Perhatian
+                                </a>
+                                <a class="dropdown-item" href="<?= base_url()?>gudang/returCancel/<?= md5($gudang['id_gudang'])?>">
+                                    <?= tablerIcon("truck-return", "me-1")?>
+                                    Retur & Cancel
+                                </a>
+                            </div>
+                        </span>
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
@@ -47,6 +75,7 @@
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Gudang</th>
                                         <th class="text-dark desktop w-1 text-nowrap" style="font-size: 11px">Durasi</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Status</th>
+                                        <th class="text-dark desktop w-1" style="font-size: 11px">Diterima</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Tindakan</th>
                                         <th class="text-dark none w-1" style="font-size: 11px">Jenis Customer</th>
                                         <th class="text-dark none w-1" style="font-size: 11px">Catatan</th>
@@ -71,11 +100,6 @@
             }
         endif;
     ?>
-
-    <script>
-        $("#<?= $menu?>").addClass("active")
-        $("#<?= $dropdown?>").addClass("active")
-    </script>
 
     <!-- load javascript -->
     <?php  

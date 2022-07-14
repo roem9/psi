@@ -1,4 +1,5 @@
-var url = url_base+"closing/load_perlu_perhatian";
+var id_cs = window.location.pathname.split("/").pop()
+var url = url_base+"cs/load_perlu_perhatian";
 
 var datatable = $('#dataTable').DataTable({ 
     initComplete: function() {
@@ -14,7 +15,7 @@ var datatable = $('#dataTable').DataTable({
     },
     processing: true,
     serverSide: true,
-    ajax: {"url": url, "type": "POST"},
+    ajax: {"url": url, "type": "POST", "data":{id_cs:id_cs}},
     columns: [
         {"data": "tgl_closing", render : function(row, data, iDisplayIndex){
             return iDisplayIndex.tgl_closing

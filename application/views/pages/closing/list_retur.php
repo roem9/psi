@@ -47,6 +47,7 @@
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Gudang</th>
                                         <th class="text-dark desktop w-1 text-nowrap" style="font-size: 11px">Durasi</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Status</th>
+                                        <th class="text-dark desktop w-1" style="font-size: 11px">Diterima</th>
                                         <th class="text-dark desktop w-1" style="font-size: 11px">Tindakan</th>
                                         <th class="text-dark none w-1" style="font-size: 11px">Jenis Customer</th>
                                         <th class="text-dark none w-1" style="font-size: 11px">Catatan</th>

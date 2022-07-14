@@ -121,3 +121,49 @@ clipboard.on('success', function(e) {
 function npwp(no_npwp){
     return no_npwp.substr(0, 2)+"."+no_npwp.substr(2, 3)+"."+no_npwp.substr(5, 3)+"."+no_npwp.substr(8, 1)+"-"+no_npwp.substr(9, 3)+"."+no_npwp.substr(12, 3);
 }
+
+function rupiah(nominal){
+    const format = nominal.toString().split('').reverse().join('');
+    const convert = format.match(/\d{1,3}/g);
+    const rupiah = 'Rp ' + convert.join('.').split('').reverse().join('')
+
+    return rupiah;
+}
+
+function tgl_indo(tgl) {
+    tgl = tgl.split("-");
+
+    if(tgl[1] == "01") month = "Januari"
+    else if(tgl[1] == "02") month = "Februari"
+    else if(tgl[1] == "03") month = "Maret"
+    else if(tgl[1] == "04") month = "April"
+    else if(tgl[1] == "05") month = "Mei"
+    else if(tgl[1] == "06") month = "Juni"
+    else if(tgl[1] == "07") month = "Juli"
+    else if(tgl[1] == "08") month = "Agustus"
+    else if(tgl[1] == "09") month = "September"
+    else if(tgl[1] == "10") month = "Oktober"
+    else if(tgl[1] == "11") month = "November"
+    else if(tgl[1] == "12") month = "Desember"
+
+    return tgl[2] + ` ` + month + ` ` +tgl[0];
+}
+
+function periode(tgl) {
+    tgl = tgl.split("-");
+
+    if(tgl[1] == "01") month = "Januari"
+    else if(tgl[1] == "02") month = "Februari"
+    else if(tgl[1] == "03") month = "Maret"
+    else if(tgl[1] == "04") month = "April"
+    else if(tgl[1] == "05") month = "Mei"
+    else if(tgl[1] == "06") month = "Juni"
+    else if(tgl[1] == "07") month = "Juli"
+    else if(tgl[1] == "08") month = "Agustus"
+    else if(tgl[1] == "09") month = "September"
+    else if(tgl[1] == "10") month = "Oktober"
+    else if(tgl[1] == "11") month = "November"
+    else if(tgl[1] == "12") month = "Desember"
+
+    return month + ` ` +tgl[0];
+}

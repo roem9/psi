@@ -231,10 +231,22 @@ $("#detailVarian .btnEdit").click(function(){
                 formData = Object.assign(formData, {[$(this).attr("name")]: $(this).val()})
             })
 
-            if ($("[name='checkbox']").is(":checked")){
+            if ($("[name='checkbox_komisi']").is(":checked")){
                 formData = Object.assign(formData, {"all_komisi": "Yes"})
             } else {
                 formData = Object.assign(formData, {"all_komisi": "No"})
+            }
+
+            if ($("[name='checkbox_harga']").is(":checked")){
+                formData = Object.assign(formData, {"all_harga": "Yes"})
+            } else {
+                formData = Object.assign(formData, {"all_harga": "No"})
+            }
+
+            if ($("[name='checkbox_suplier']").is(":checked")){
+                formData = Object.assign(formData, {"all_suplier": "Yes"})
+            } else {
+                formData = Object.assign(formData, {"all_suplier": "No"})
             }
 
             let eror = required(form);

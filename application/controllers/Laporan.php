@@ -35,6 +35,20 @@ class Laporan extends MY_Controller {
         foreach ($tgl as $i => $tgl) {
             $data['laporan_harian'][$i]['tgl'] = $tgl;
 
+            $closingan = $this->laporan->get_all("closing", ["tgl_closing" => $tgl]);
+
+            $id_closingan = [];
+            foreach ($closingan as $k => $closingan) {
+                $id_closingan[$k] = $closingan['id_closing'];
+            }
+
+            $this->db->select("nama_varian, SUM(qty) as qty");
+            $this->db->from("detail_closing");
+            $this->db->where("produk", $produk);
+            $this->db->where_in("id_closing", $id_closingan);
+            $this->db->group_by("id_varian");
+            $data['laporan_harian'][$i]['closingan'] = $this->db->get()->result_array();
+
             foreach ($cs as $key => $data_cs) {
                 $data['laporan_harian'][$i]['cs'][$key]['data_cs'] = $data_cs;
                 

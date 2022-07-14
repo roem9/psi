@@ -60,7 +60,7 @@
                     </span>
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" id="bayarClosing" href="<?= base_url()?>closing/bayar" >
+                    <!-- <a class="dropdown-item" id="bayarClosing" href="<?= base_url()?>closing/bayar" >
                         Bayar Closing
                     </a>
                     <a class="dropdown-item" id="listClosing" href="<?= base_url()?>closing/list" >
@@ -74,6 +74,21 @@
                     </a>
                     <a class="dropdown-item" id="perluPerhatian" href="<?= base_url()?>closing/perluperhatian" >
                         Perlu Perhatian
+                    </a> -->
+                    <a class="dropdown-item" id="listPenjualan" href="<?= base_url()?>closing/list" >
+                        Semua Penjualan
+                    </a>
+                    <a class="dropdown-item" id="pendingPickup" href="<?= base_url()?>closing/pendingpickup" >
+                        Pending Pickup
+                    </a>
+                    <a class="dropdown-item" id="perluPerhatian" href="<?= base_url()?>closing/perluperhatian" >
+                        Perlu Perhatian
+                    </a>
+                    <a class="dropdown-item" id="returCancel" href="<?= base_url()?>closing/returcancel" >
+                        Retur & Cancel
+                    </a>
+                    <a class="dropdown-item" id="arsipClosing" href="<?= base_url()?>closing/arsip" >
+                        Arsip Closing
                     </a>
                 </div>
             </li>
@@ -127,10 +142,10 @@
                     </span>
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" id="listCs" href="<?= base_url()?>other/cs" >
+                    <a class="dropdown-item" id="listCs" href="<?= base_url()?>cs" >
                         List CS
                     </a>
-                    <a class="dropdown-item" id="listGudang" href="<?= base_url()?>other/gudang" >
+                    <a class="dropdown-item" id="listGudang" href="<?= base_url()?>gudang" >
                         List Gudang
                     </a>
                     <a class="dropdown-item" id="listGudang" href="<?= base_url()?>other/kpi" >

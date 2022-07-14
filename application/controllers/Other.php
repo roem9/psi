@@ -88,6 +88,22 @@ class Other extends MY_Controller {
         echo json_encode($data);
     }
 
+    public function tagihan_gudang(){
+        $data['title'] = 'Tagihan Gudang';
+        $data['menu'] = "";
+        $data['modal'] = ["modal_other"];
+        $data['js'] = [
+            "ajax.js",
+            "function.js",
+            "helper.js",
+            "load_data/gudang_reload.js",
+            "modules/gudang.js",
+        ];
+
+        $this->load->view("pages/other/list_gudang", $data);
+
+    }
+
     public function kpi(){
         $data['title'] = 'List KPI';
         $data['menu'] = "Other";

@@ -124,6 +124,8 @@ class Other_model extends MY_Model {
     public function load_gudang(){
         $this->datatables->select('id_gudang, nama_gudang, username');
         $this->datatables->from('gudang');
+        
+        $this->datatables->add_column("utang", "$1", "utang_gudang(id_gudang)");
         // $this->datatables->where("hapus", "0");
         $this->datatables->add_column('menu','
                     <span class="dropdown">

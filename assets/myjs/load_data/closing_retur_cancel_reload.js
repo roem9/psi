@@ -1,4 +1,4 @@
-var url = url_base+"closing/load_perlu_perhatian";
+var url = url_base+"closing/load_retur_cancel";
 
 var datatable = $('#dataTable').DataTable({ 
     initComplete: function() {
@@ -34,8 +34,8 @@ var datatable = $('#dataTable').DataTable({
         {"data": "status", className:'text-nowrap', render : function(row, data, iDisplayIndex){
             return iDisplayIndex.status + iDisplayIndex.status_delivered;
         }},
-        {"data": "status_stok", className:'text-nowrap', render : function(row, data, iDisplayIndex){
-            return iDisplayIndex.status_stok;
+        {"data": "status_retur", className:'text-nowrap', render : function(row, data, iDisplayIndex){
+            return iDisplayIndex.status_retur;
         }},
         {"data": "menu"},
         {"data": "jenis_closing"},
@@ -51,7 +51,7 @@ var datatable = $('#dataTable').DataTable({
     },
     "columnDefs": [
     { "searchable": false, "targets": [""] },  // Disable search on first and last columns
-    { "targets": [2, 5, 6, 7, 8], "orderable": false},
+    { "targets": [2, 5, 7], "orderable": false},
     ],
     "rowReorder": {
         "selector": 'td:nth-child(0)'

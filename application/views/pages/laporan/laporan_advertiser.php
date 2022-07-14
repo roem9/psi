@@ -75,6 +75,11 @@
                                             <td><?= $total / COUNT($laporan_harian['cs'])?>%</td>
                                         </tr>
                                     </table>
+
+                                    <?php foreach ($laporan_harian['closingan'] as $data) :?>
+                                        <?= $data['nama_varian'] . " = " . $data['qty'] . ", ";?>
+                                    <?php endforeach;?>
+                                    
                                 </div>
                             <?php endforeach;?>
 

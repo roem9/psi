@@ -236,12 +236,12 @@ class Closing_model extends MY_Model {
     }
 
     public function load_closing($status){
-        $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status, tgl_retur_cancel');
+        $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status, tgl_retur_cancel, no_hp');
         $this->datatables->from('closing');
-        $this->db->order_by("tgl_closing", "desc");
-
         if($status == "arsip") $this->datatables->where("hapus", "1");
         else $this->datatables->where("hapus", "0");
+        $this->db->order_by("tgl_closing", "desc");
+
 
         $this->datatables->edit_column("status", "<a href='#statusClosing' data-id='$3' data-bs-toggle='modal' class='badge statusClosing' style='background-color: $2'>$1</a>", "status, warna_status(status), id_closing");
         $this->datatables->add_column("stok", "$1", "stok_varian(id_closing)");
@@ -314,13 +314,61 @@ class Closing_model extends MY_Model {
         return $this->datatables->generate();
     }
 
-    public function load_closing_perhatian($table){
-        $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status');
-        $this->datatables->from($table);
+    // public function load_closing_perhatian($table){
+    //     $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status');
+    //     $this->datatables->from($table);
+    //     $this->db->order_by("tgl_closing", "desc");
+
+    //     $this->datatables->where("hapus", "0");
+
+    //     $this->datatables->edit_column("status", "<a href='#statusClosing' data-id='$3' data-bs-toggle='modal' class='badge statusClosing' style='background-color: $2'>$1</a>", "status, warna_status(status), id_closing");
+    //     $this->datatables->add_column("stok", "$1", "stok_varian(id_closing)");
+    //     $this->datatables->add_column("produk_closing", "$1", "produk_closing(id_closing)");
+    //     $this->datatables->add_column("durasi", "$1", "durasi(tgl_input, tgl_closing, tgl_delivery, tgl_ubah_status)");
+    //     $this->datatables->add_column("status_input", "$1", "status_input(tgl_input, tgl_closing)");
+    //     $this->datatables->add_column("status_delivered", "$1", "status_delivered(tgl_delivery, tgl_ubah_status)");
+
+        
+    //     $this->datatables->add_column('menu','
+    //                 <span class="dropdown">
+    //                 <button class="btn align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
+    //                     '.tablerIcon("settings", "").'
+    //                 </button>
+    //                 <div class="dropdown-menu dropdown-menu-end">
+    //                     <a class="dropdown-item" target="_blank" href="'.base_url().'closing/detail/$2" data-id="$1">
+    //                         '.tablerIcon("info-circle", "me-1").'
+    //                         Detail Closing
+    //                     </a>
+    //                     <a class="dropdown-item resend" data-bs-toggle="modal" href="#addClosing" data-id="$1">
+    //                         '.tablerIcon("repeat", "me-1").'
+    //                         Resend
+    //                     </a>
+    //                     <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
+    //                         '.tablerIcon("message-circle", "me-1").'
+    //                         Komen
+    //                     </a>
+    //                     <a class="dropdown-item komplainClosing" data-bs-toggle="modal" href="#komplainClosing" data-id="$1">
+    //                         '.tablerIcon("alert-octagon", "me-1").'
+    //                         Komplain
+    //                     </a>
+    //                     <a class="dropdown-item arsipClosing" href="javascript:void(0)" data-id="$1">
+    //                         '.tablerIcon("archive", "me-1").'
+    //                         Arsipkan
+    //                     </a>
+    //                 </div>
+    //                 </span>', 'id_closing, md5(id_closing)');
+
+    //     return $this->datatables->generate();
+    // }
+
+    public function load_pending_pickup(){
+        $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status, no_hp, status_stok');
+        $this->datatables->from("closing");
+        $this->datatables->where("hapus = 0 AND (status = 'Waiting' OR status = 'Produksi')");
+        // $this->datatables->where("hapus", "0");
         $this->db->order_by("tgl_closing", "desc");
 
-        $this->datatables->where("hapus", "0");
-
+        $this->datatables->edit_column("status_stok", "$1", "status_stok(status_stok)");
         $this->datatables->edit_column("status", "<a href='#statusClosing' data-id='$3' data-bs-toggle='modal' class='badge statusClosing' style='background-color: $2'>$1</a>", "status, warna_status(status), id_closing");
         $this->datatables->add_column("stok", "$1", "stok_varian(id_closing)");
         $this->datatables->add_column("produk_closing", "$1", "produk_closing(id_closing)");
@@ -335,7 +383,7 @@ class Closing_model extends MY_Model {
                         '.tablerIcon("settings", "").'
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" target="_blank" href="'.base_url().'closing/detail/$2" data-id="$1">
+                        <a class="dropdown-item detailClosing" data-bs-toggle="modal" href="#detailClosing" data-id="$1">
                             '.tablerIcon("info-circle", "me-1").'
                             Detail Closing
                         </a>
@@ -361,13 +409,17 @@ class Closing_model extends MY_Model {
         return $this->datatables->generate();
     }
 
-    public function load_bayar_closing(){
-        $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status, status_lunas');
-        $this->datatables->from("closing");
+    public function load_perlu_perhatian(){
+        $this->datatables->select('a.id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, a.status, a.tgl_input, tgl_delivery, tgl_ubah_status, no_hp, status_stok');
+        $this->datatables->from("closing as a");
+        $this->datatables->join("komen_closing as b", "a.id_closing = b.id_closing");
+        // $this->datatables->join("komplain_closing as c", "a.id_closing = c.id_closing");
+        $this->datatables->where("hapus = 0 AND a.status != 'Delivered' AND a.status != 'Canceled' AND a.status != 'Returned'");
+        // $this->datatables->where("hapus", "0");
+        $this->db->group_by("a.id_closing");
         $this->db->order_by("tgl_closing", "desc");
 
-        $this->datatables->where(["hapus" => "0", "status" => "Delivered"]);
-
+        $this->datatables->edit_column("status_stok", "$1", "status_stok(status_stok)");
         $this->datatables->edit_column("status", "<a href='#statusClosing' data-id='$3' data-bs-toggle='modal' class='badge statusClosing' style='background-color: $2'>$1</a>", "status, warna_status(status), id_closing");
         $this->datatables->add_column("stok", "$1", "stok_varian(id_closing)");
         $this->datatables->add_column("produk_closing", "$1", "produk_closing(id_closing)");
@@ -382,11 +434,104 @@ class Closing_model extends MY_Model {
                         '.tablerIcon("settings", "").'
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item detailClosing" data-bs-toggle="modal" href="#detailClosing" data-id="$1">
+                            '.tablerIcon("info-circle", "me-1").'
+                            Detail Closing
+                        </a>
+                        <a class="dropdown-item resend" data-bs-toggle="modal" href="#addClosing" data-id="$1">
+                            '.tablerIcon("repeat", "me-1").'
+                            Resend
+                        </a>
+                        <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
+                            '.tablerIcon("message-circle", "me-1").'
+                            Komen
+                        </a>
+                        <a class="dropdown-item komplainClosing" data-bs-toggle="modal" href="#komplainClosing" data-id="$1">
+                            '.tablerIcon("alert-octagon", "me-1").'
+                            Komplain
+                        </a>
+                        <a class="dropdown-item arsipClosing" href="javascript:void(0)" data-id="$1">
+                            '.tablerIcon("archive", "me-1").'
+                            Arsipkan
+                        </a>
+                    </div>
+                    </span>', 'id_closing, md5(id_closing)');
+
+        return $this->datatables->generate();
+    }
+
+    public function load_retur_cancel(){
+        $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status, tgl_retur_cancel, no_hp, status_retur');
+        $this->datatables->from('closing');
+        $this->datatables->where("hapus = 0 AND (status = 'Returned' OR status = 'Canceled')");
+        $this->db->order_by("tgl_closing", "desc");
+
+        $this->datatables->edit_column("status_retur", "$1", "status_retur(status, status_retur)");
+        $this->datatables->edit_column("status", "<a href='#statusClosing' data-id='$3' data-bs-toggle='modal' class='badge statusClosing' style='background-color: $2'>$1</a>", "status, warna_status(status), id_closing");
+        $this->datatables->add_column("stok", "$1", "stok_varian(id_closing)");
+        $this->datatables->add_column("produk_closing", "$1", "produk_closing(id_closing)");
+        $this->datatables->add_column("durasi", "$1", "durasi(tgl_input, tgl_closing, tgl_delivery, tgl_ubah_status, tgl_retur_cancel)");
+        $this->datatables->add_column("status_input", "$1", "status_input(tgl_input, tgl_closing)");
+        $this->datatables->add_column("status_delivered", "$1", "status_delivered(tgl_delivery, tgl_ubah_status)");
+
+        $this->datatables->add_column('menu','
+                    <span class="dropdown">
+                    <button class="btn align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
+                        '.tablerIcon("settings", "").'
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item detailClosing" data-bs-toggle="modal" href="#detailClosing" data-id="$1">
+                            '.tablerIcon("info-circle", "me-1").'
+                            Detail Closing
+                        </a>
+                        <a class="dropdown-item resend" data-bs-toggle="modal" href="#addClosing" data-id="$1">
+                            '.tablerIcon("repeat", "me-1").'
+                            Resend
+                        </a>
+                        <a class="dropdown-item komenClosing" data-bs-toggle="modal" href="#komenClosing" data-id="$1">
+                            '.tablerIcon("message-circle", "me-1").'
+                            Komen
+                        </a>
+                        <a class="dropdown-item komplainClosing" data-bs-toggle="modal" href="#komplainClosing" data-id="$1">
+                            '.tablerIcon("alert-octagon", "me-1").'
+                            Komplain
+                        </a>
+                        <a class="dropdown-item arsipClosing" href="javascript:void(0)" data-id="$1">
+                            '.tablerIcon("archive", "me-1").'
+                            Arsipkan
+                        </a>
+                    </div>
+                    </span>', 'id_closing, md5(id_closing), nama_closing');
+
+        return $this->datatables->generate();
+    }
+
+
+    public function load_bayar_closing(){
+        $this->datatables->select('id_closing, tgl_closing, catatan, jenis_closing, nama_closing, nominal_transaksi, nama_cs, nama_gudang, status, tgl_input, tgl_delivery, tgl_ubah_status, status_lunas, no_hp');
+        $this->datatables->from("closing");
+        $this->db->order_by("tgl_closing", "desc");
+
+        $this->datatables->where(["hapus" => "0", "status" => "Delivered"]);
+
+        $this->datatables->edit_column("status", "<a href='#statusClosing' data-id='$3' data-bs-toggle='modal' class='badge statusClosing' style='background-color: $2'>$1</a>", "status, warna_status(status), id_closing");
+        $this->datatables->add_column("stok", "$1", "stok_varian(id_closing)");
+        $this->datatables->add_column("produk_closing", "$1", "produk_closing(id_closing)");
+        $this->datatables->add_column("durasi", "$1", "durasi(tgl_input, tgl_closing, tgl_delivery, tgl_ubah_status)");
+        $this->datatables->add_column("status_input", "$1", "status_input(tgl_input, tgl_closing)");
+        $this->datatables->add_column("status_delivered", "$1", "status_delivered(tgl_delivery, tgl_ubah_status)");
+        
+        $this->datatables->add_column('menu','
+                    <span class="dropdown">
+                    <button class="btn align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
+                        '.tablerIcon("settings", "").'
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item tandaiLunas" data-id="$1" data-nama="$3">
                             '.tablerIcon("cash", "me-1").'
                             Tandai Lunas
                         </a>
-                        <a class="dropdown-item" target="_blank" href="'.base_url().'closing/detail/$2" data-id="$1">
+                        <a class="dropdown-item detailClosing" data-bs-toggle="modal" href="#detailClosing" data-id="$1">
                             '.tablerIcon("info-circle", "me-1").'
                             Detail Closing
                         </a>

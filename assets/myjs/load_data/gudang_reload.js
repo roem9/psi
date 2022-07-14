@@ -12,10 +12,11 @@ var datatable = $('#dataTable').DataTable({
     },
     processing: true,
     serverSide: true,
-    ajax: {"url": url_base+"other/load_gudang", "type": "POST"},
+    ajax: {"url": url_base+"gudang/load_gudang", "type": "POST"},
     columns: [
         {"data": "nama_gudang"},
         {"data": "username"},
+        {"data": "utang"},
         {"data": "menu"},
     ],
     order: [[0, 'asc']],
@@ -27,7 +28,7 @@ var datatable = $('#dataTable').DataTable({
     },
     "columnDefs": [
     { "searchable": false, "targets": [""] },  // Disable search on first and last columns
-    { "targets": [1], "orderable": false},
+    { "targets": [2, 3], "orderable": false},
     ],
     "rowReorder": {
         "selector": 'td:nth-child(0)'

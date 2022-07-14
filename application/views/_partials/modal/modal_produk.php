@@ -52,6 +52,10 @@
                         <label for="">Produk</label>
                     </div>
                     <div class="form-floating mb-3">
+                        <input type="text" name="harga_suplier" class="form form-control form-control-sm required rupiah">
+                        <label class="col-form-label">Harga Suplier</label>
+                    </div>
+                    <div class="form-floating mb-3">
                         <input type="text" name="harga" class="form form-control form-control-sm required rupiah">
                         <label class="col-form-label">Harga</label>
                     </div>
@@ -100,6 +104,10 @@
                     <label for="">Produk</label>
                 </div>
                 <div class="form-floating mb-3">
+                    <input type="text" name="harga_suplier" class="form form-control form-control-sm required rupiah">
+                    <label class="col-form-label">Harga Suplier</label>
+                </div>
+                <div class="form-floating mb-3">
                     <input type="text" name="harga" class="form form-control form-control-sm required rupiah">
                     <label class="col-form-label">Harga</label>
                 </div>
@@ -114,6 +122,10 @@
                 <label class="form-check">
                     <input class="form-check-input" type="checkbox" name="checkbox_harga" value="yes">
                     <span class="form-check-label">Terapkan harga untuk semua produk yang sama</span>
+                </label>
+                <label class="form-check">
+                    <input class="form-check-input" type="checkbox" name="checkbox_suplier" value="yes">
+                    <span class="form-check-label">Terapkan harga suplier untuk semua produk yang sama</span>
                 </label>
             </div>
             <div class="modal-footer">

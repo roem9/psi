@@ -24,9 +24,9 @@ class Closing extends MY_Controller {
     }
 
     public function list(){
-        $data['title'] = 'List Closing';
+        $data['title'] = 'List Semua Penjualan';
         $data['menu'] = 'Closing';
-        $data['dropdown'] = 'listClosing';
+        $data['dropdown'] = 'listPenjualan';
 
         $data['modal'] = ["modal_closing"];
 
@@ -56,7 +56,7 @@ class Closing extends MY_Controller {
             "modules/closing.js",
         ];
 
-        $this->load->view("pages/closing/list", $data);
+        $this->load->view("pages/closing/list_pending_perhatian", $data);
     }
 
     public function perluPerhatian(){
@@ -74,7 +74,25 @@ class Closing extends MY_Controller {
             "modules/closing.js",
         ];
 
-        $this->load->view("pages/closing/list", $data);
+        $this->load->view("pages/closing/list_pending_perhatian", $data);
+    }
+
+    public function returCancel(){
+        $data['title'] = 'List Closing Retur & Cancel';
+        $data['menu'] = 'Closing';
+        $data['dropdown'] = 'returCancel';
+
+        $data['modal'] = ["modal_closing"];
+
+        $data['js'] = [
+            "ajax.js",
+            "function.js",
+            "helper.js",
+            "load_data/closing_retur_cancel_reload.js",
+            "modules/closing.js",
+        ];
+
+        $this->load->view("pages/closing/list_retur", $data);
     }
     
     public function arsip(){
@@ -101,9 +119,21 @@ class Closing extends MY_Controller {
         echo $output;
     }
 
-    public function load_closing_perhatian($table){
+    public function load_perlu_perhatian(){
         header('Content-Type: application/json');
-        $output = $this->closing->load_closing_perhatian($table);
+        $output = $this->closing->load_perlu_perhatian();
+        echo $output;
+    }
+
+    public function load_pending_pickup(){
+        header('Content-Type: application/json');
+        $output = $this->closing->load_pending_pickup();
+        echo $output;
+    }
+
+    public function load_retur_cancel(){
+        header('Content-Type: application/json');
+        $output = $this->closing->load_retur_cancel();
         echo $output;
     }
 
@@ -206,7 +236,8 @@ class Closing extends MY_Controller {
 
             // $semua_closing = $this->closing->get_all("closing", "tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
             $this->db->from("closing");
-            $this->db->where("tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+            // $this->db->where("tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+            $this->db->where("tgl_input BETWEEN '$tgl_awal' AND '$tgl_akhir'");
             $this->db->where("nama_gudang", $nama_gudang);
             $this->db->where("hapus", 0);
             $semua_closing = $this->db->get()->result_array();
@@ -274,7 +305,8 @@ class Closing extends MY_Controller {
             
             // $semua_closing = $this->closing->get_all("closing", "tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
             $this->db->from("closing");
-            $this->db->where("tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+            // $this->db->where("tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+            $this->db->where("tgl_input BETWEEN '$tgl_awal' AND '$tgl_akhir'");
             $this->db->where("nama_gudang", $nama_gudang);
             $this->db->where("hapus", 0);
             $semua_closing = $this->db->get()->result_array();

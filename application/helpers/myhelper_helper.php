@@ -281,3 +281,87 @@
 
         return $bulan." ".$tahun;
     }
+
+    function utang_gudang($id_gudang){
+        $CI =& get_instance();
+        $CI->db->from("closing");
+        $CI->db->where(["id_gudang" => $id_gudang, "tgl_kirim !=" => "NULL", "hapus" => 0]);
+        $closing = $CI->db->get()->result_array();
+
+        $nominal = 0;
+        foreach ($closing as $closing) {
+            $CI->db->from("detail_closing");
+            $CI->db->where(["id_closing" => $closing['id_closing']]);
+            $detail_closing = $CI->db->get()->result_array();
+            foreach ($detail_closing as $detail_closing) {
+                $nominal += ($detail_closing['qty'] * $detail_closing['harga_suplier']);
+            }
+        }
+
+        $CI->db->select("SUM(nominal) as nominal");
+        $CI->db->from("pencairan_gudang");
+        $CI->db->where(["id_gudang" => $id_gudang]);
+        $pencairan = $CI->db->get()->row_array();
+
+        $utang = $pencairan['nominal'] - $nominal;
+
+        if($utang < 0){
+            return "<span style='color: red'><b>" . rupiah(abs($utang)) . "</b></span>";
+        } else {
+            return "<span style='color: green'><b>" . rupiah($utang) . "</b></span>";
+        }
+
+    }
+
+    function utang_cs($id_cs){
+        $CI =& get_instance();
+        $CI->db->from("closing");
+        $CI->db->where(["id_cs" => $id_cs, "status" => "Delivered", "hapus" => 0]);
+        $closing = $CI->db->get()->result_array();
+
+        $nominal = 0;
+        foreach ($closing as $closing) {
+            $CI->db->from("detail_closing");
+            $CI->db->where(["id_closing" => $closing['id_closing']]);
+            $detail_closing = $CI->db->get()->result_array();
+            foreach ($detail_closing as $detail_closing) {
+                $nominal += ($detail_closing['qty'] * $detail_closing['komisi']);
+            }
+        }
+
+        $CI->db->select("SUM(nominal) as nominal");
+        $CI->db->from("pencairan_cs");
+        $CI->db->where(["id_cs" => $id_cs]);
+        $pencairan = $CI->db->get()->row_array();
+
+        $utang = $pencairan['nominal'] - $nominal;
+
+        if($utang < 0){
+            return "<span style='color: red'><b>" . rupiah(abs($utang)) . "</b></span>";
+        } else {
+            return "<span style='color: green'><b>" . rupiah($utang) . "</b></span>";
+        }
+
+    }
+
+    function status_retur($status, $status_retur){
+        if($status == "Returned"){
+            if($status_retur == "Sudah Diterima"){
+                return "<center>" . tablerIcon("circle-check", "text-success") . "</center>";
+            } else {
+                return "<center>" . tablerIcon("circle-x", "text-danger") . "</center>";
+            }
+        } else {
+            return "<center>-</center>";
+        }
+    }
+
+    function status_stok($status_stok){
+        if($status_stok == "Terkirim"){
+            return "<center>" . tablerIcon("circle-check", "text-success") . "</center>";
+        } else if($status_stok == "Belum Dikirim" || $status_stok == ""){
+            return "<center>" . tablerIcon("clock", "text-secondary") . "</center>";
+        } else if($status_stok == "Stok Kosong"){
+            return "<center>" . tablerIcon("circle-x", "text-danger") . "</center>";
+        }
+    }
