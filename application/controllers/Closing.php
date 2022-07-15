@@ -357,8 +357,8 @@ class Closing extends MY_Controller {
     
                 $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue('A' . $kolom, $nomor)
-                    ->setCellValue('B' . $kolom, date("d-m-Y", strtotime($closing['tgl_closing'])))
-                    ->setCellValue('C' . $kolom, date("d-m-Y", strtotime($closing['tgl_input'])))
+                    ->setCellValue('B' . $kolom, date("d-m-Y", strtotime($closing['tgl_input'])))
+                    ->setCellValue('C' . $kolom, date("d-m-Y", strtotime($closing['tgl_closing'])))
                     ->setCellValue('D' . $kolom, $closing['jenis_closing'])
                     ->setCellValue('E' . $kolom, $closing['nama_closing'])
                     ->setCellValue('F' . $kolom, $closing['alamat'])
