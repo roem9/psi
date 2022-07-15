@@ -237,7 +237,7 @@ class Closing extends MY_Controller {
             // $semua_closing = $this->closing->get_all("closing", "tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
             $this->db->from("closing");
             // $this->db->where("tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
-            $this->db->where("tgl_input BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+            $this->db->where("DATE_FORMAT(tgl_input, '%Y-%m-%d') BETWEEN '$tgl_awal' AND '$tgl_akhir'");
             $this->db->where("nama_gudang", $nama_gudang);
             $this->db->where("hapus", 0);
             $semua_closing = $this->db->get()->result_array();
@@ -306,7 +306,7 @@ class Closing extends MY_Controller {
             // $semua_closing = $this->closing->get_all("closing", "tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
             $this->db->from("closing");
             // $this->db->where("tgl_closing BETWEEN '$tgl_awal' AND '$tgl_akhir'");
-            $this->db->where("tgl_input BETWEEN '$tgl_awal' AND '$tgl_akhir'");
+            $this->db->where("DATE_FORMAT(tgl_input, '%Y-%m-%d') BETWEEN '$tgl_awal' AND '$tgl_akhir'");
             $this->db->where("nama_gudang", $nama_gudang);
             $this->db->where("hapus", 0);
             $semua_closing = $this->db->get()->result_array();
