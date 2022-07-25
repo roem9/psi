@@ -42,15 +42,38 @@ class Laporan extends MY_Controller {
                 $id_closingan[$k] = $closingan['id_closing'];
             }
 
-            $this->db->select("nama_varian, SUM(qty) as qty");
+            $this->db->select("kode_varian, nama_varian, SUM(qty) as qty");
             $this->db->from("detail_closing");
             $this->db->where("produk", $produk);
             $this->db->where_in("id_closing", $id_closingan);
-            $this->db->group_by("id_varian");
+            $this->db->group_by("id_closing");
             $data['laporan_harian'][$i]['closingan'] = $this->db->get()->result_array();
 
             foreach ($cs as $key => $data_cs) {
                 $data['laporan_harian'][$i]['cs'][$key]['data_cs'] = $data_cs;
+
+                // detail closingan 
+                    
+                    $closingan = $this->laporan->get_all("closing", ["tgl_closing" => $tgl, "id_cs" => $data_cs['id_cs']]);
+                    if($closingan){
+                        $id_closingan = [];
+                        foreach ($closingan as $k => $closingan) {
+                            $id_closingan[$k] = $closingan['id_closing'];
+                        }
+    
+                        $this->db->select("a.id_closing, total_qty, COUNT(a.id_closing)");
+                        $this->db->from("closing as a");
+                        $this->db->join("detail_closing as b", "a.id_closing = b.id_closing");
+                        $this->db->where("b.produk", $produk);
+                        $this->db->where_in("a.id_closing", $id_closingan);
+                        $this->db->group_by("total_qty, a.id_closing");
+                        $data['laporan_harian'][$i]['cs'][$key]['closingan'] = $this->db->get()->result_array();
+                    } else {
+                        $data['laporan_harian'][$i]['cs'][$key]['closingan'] = [];
+                    }
+
+                // detail closingan 
+
                 
                 // laporan leads 
                 $leads = $this->laporan->get_one("laporan_harian", ["id_cs" => $data_cs['id_cs'], "produk" => $produk, "tgl_laporan" => $tgl]);

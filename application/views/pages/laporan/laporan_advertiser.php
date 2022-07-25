@@ -69,16 +69,27 @@
                                             <?php 
                                                 $total = 0;
                                                 foreach ($laporan_harian['cs'] as $data_cs) :?>
-                                                <?php $total += $data_cs['konversi'];?>
-                                                <td><?= $data_cs['konversi']?>%</td>
-                                            <?php endforeach;?>
-                                            <td><?= $total / COUNT($laporan_harian['cs'])?>%</td>
+                                                    <?php $total += $data_cs['konversi'];?>
+                                                    <td><?= $data_cs['konversi']?>%</td>
+                                                <?php endforeach;?> 
+                                            <td>
+                                                <?= round($total / COUNT($laporan_harian['cs']))?>%
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Detail</b></td>
+                                            <?php foreach ($laporan_harian['cs'] as $data_cs) :?>
+                                                <td>
+                                                    <?php $arrayFilterQty = array_count_values(array_column($data_cs['closingan'], "total_qty"));?>
+                                                    <?php foreach ($arrayFilterQty as $i => $value) :?>
+                                                        <?= "B" . $i ."=". $value . "<br>";?>
+                                                    <?php endforeach;?>
+                                                </td>
+                                                <?php endforeach;?>
+                                            <td>-</td>
                                         </tr>
                                     </table>
 
-                                    <?php foreach ($laporan_harian['closingan'] as $data) :?>
-                                        <?= $data['nama_varian'] . " = " . $data['qty'] . ", ";?>
-                                    <?php endforeach;?>
                                     
                                 </div>
                             <?php endforeach;?>

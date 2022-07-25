@@ -67,7 +67,10 @@ class Closing_model extends MY_Model {
             
             $id_varian = $this->input->post("id_varian");
             $qty = $this->input->post("qty");
+            $total_qty = 0;
             foreach ($id_varian as $i => $id_varian) {
+                $total_qty += $qty[$i];
+
                 $varian = $this->get_one("varian_produk", ["id_varian" => $id_varian]);
                 $data = [
                     "id_closing" => $id_closing,
@@ -82,6 +85,8 @@ class Closing_model extends MY_Model {
     
                 $query = $this->add_data("detail_closing", $data);
             }
+
+            $query = $this->edit_data("closing", ["id_closing" => $id_closing], ["total_qty" => $total_qty]);
             
             if($query) return 1;
             else return 0;
@@ -163,7 +168,11 @@ class Closing_model extends MY_Model {
         $id_varian = $this->input->post("id_varian");
         $qty = $this->input->post("qty");
         $harga = $this->input->post("harga");
+
+        $total_qty = 0;
         foreach ($id_varian as $i => $id_varian) {
+            $total_qty += $qty[$i];
+
             $varian = $this->get_one("varian_produk", ["id_varian" => $id_varian]);
             $data = [
                 "id_closing" => $id_closing,
@@ -178,6 +187,8 @@ class Closing_model extends MY_Model {
 
             $query = $this->add_data("detail_closing", $data);
         }
+
+        $query = $this->edit_data("closing", ["id_closing" => $id_closing], ["total_qty" => $total_qty]);
         
         if($query) return 1;
         else return 0;

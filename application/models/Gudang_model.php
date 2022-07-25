@@ -101,6 +101,27 @@ class Gudang_model extends MY_Model {
 
             $data['periode'][$i]['pembayaran'] = $pembayaran;
 
+            // retur cancel 
+            $retur_cancel = 0;
+            
+            $closing = $this->get_all("closing", ["MONTH(tgl_closing)" => date("m", strtotime($periode['tgl_closing'])), "YEAR(tgl_closing)" => date("Y", strtotime($periode['tgl_closing'])), "tgl_kirim !=" => "NULL", "md5(id_gudang)" => $id_gudang, "hapus" => 0, "status" => "Returned"]);
+            foreach ($closing as $closing) {
+                $detail_closing = $this->get_all("detail_closing",["id_closing" => $closing['id_closing']]);
+                foreach ($detail_closing as $detail_closing) {
+                    $retur_cancel += ($detail_closing['qty'] * $detail_closing['harga_suplier']);
+                }
+            }
+
+            $closing = $this->get_all("closing", ["MONTH(tgl_closing)" => date("m", strtotime($periode['tgl_closing'])), "YEAR(tgl_closing)" => date("Y", strtotime($periode['tgl_closing'])), "tgl_kirim !=" => "NULL", "md5(id_gudang)" => $id_gudang, "hapus" => 0, "status" => "Canceled"]);
+            foreach ($closing as $closing) {
+                $detail_closing = $this->get_all("detail_closing",["id_closing" => $closing['id_closing']]);
+                foreach ($detail_closing as $detail_closing) {
+                    $retur_cancel += ($detail_closing['qty'] * $detail_closing['harga_suplier']);
+                }
+            }
+
+            $data['periode'][$i]['retur_cancel'] = $retur_cancel;
+
             // pencairan 
             $this->db->select("SUM(nominal) as pencairan")->from("pencairan_gudang")->where(["md5(id_gudang)" => $id_gudang, "MONTH(periode)" => date("m", strtotime($periode['tgl_closing'])), "YEAR(periode)" => date("Y", strtotime($periode['tgl_closing']))]);
             $pencairan = $this->db->get()->row_array();

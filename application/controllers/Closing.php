@@ -418,6 +418,20 @@ class Closing extends MY_Controller {
         }
         $this->load->view("pages/closing/view", $data);
     }
+
+    public function total_qty_closingan(){
+        $closing = $this->closing->get_all("closing");
+        foreach ($closing as $closing) {
+            $this->db->select("sum(qty) as qty");
+            $this->db->from("detail_closing");
+            $this->db->where(["id_closing" => $closing['id_closing']]);
+            $detail_closing = $this->db->get()->row_array();
+
+            $this->closing->edit_data("closing", ["id_closing" => $closing['id_closing']], ["total_qty" => $detail_closing['qty']]);
+        }
+
+        echo "sukses";
+    }
 }
 
 /* End of file Closing.php */

@@ -70,7 +70,7 @@
                                     $sisa_pembayaran = 0;
                                     if($pembayaran){
                                         foreach ($pembayaran['periode'] as $data_pembayaran){
-                                            $sisa_pembayaran += ($data_pembayaran['pembayaran'] - $data_pembayaran['pencairan']);
+                                            $sisa_pembayaran += ($data_pembayaran['pembayaran'] - $data_pembayaran['pencairan'] - $data_pembayaran['retur_cancel']);
                                         }
                                     }
                                 ?>
@@ -83,6 +83,7 @@
                                     <tr>
                                         <th class="text-dark desktop" style="font-size: 11px">Periode</th>
                                         <th class="text-dark desktop" style="font-size: 11px"><center>Total Tagihan</center></th>
+                                        <th class="text-dark desktop" style="font-size: 11px"><center>Retur/Cancel</center></th>
                                         <th class="text-dark desktop" style="font-size: 11px"><center>Terbayar</center></th>
                                         <th class="text-dark desktop" style="font-size: 11px"><center>Sisa</center></th>
                                         <th class="text-dark desktop w-1 text-nowrap" style="font-size: 11px"><center>Status pembayaran</center></th>
@@ -95,12 +96,15 @@
                                             <tr>
                                                 <td><?= $pembayaran['periode']?></td>
                                                 <td><center><?= rupiah($pembayaran['pembayaran'])?></center></td>
+                                                <td class="text-success"><b><center><?= rupiah($pembayaran['retur_cancel'])?></center></b></td>
                                                 <td><center><?= rupiah($pembayaran['pencairan'])?></center></td>
-                                                <td><center><?= rupiah($pembayaran['pembayaran'] - $pembayaran['pencairan'])?></center></td>
+                                                <td><center><?= rupiah($pembayaran['pembayaran'] - $pembayaran['pencairan'] - $pembayaran['retur_cancel'])?></center></td>
                                                 <?php if($pembayaran['pencairan'] == 0) :?>
                                                     <td class="text-nowrap bg-danger text-light"><center>Belum Lunas</center></td>
-                                                <?php elseif($pembayaran['pembayaran'] - $pembayaran['pencairan'] == 0):?>
+                                                <?php elseif($pembayaran['pembayaran'] - $pembayaran['pencairan'] - $pembayaran['retur_cancel'] == 0):?>
                                                     <td class="text-nowrap bg-success text-light"><center>Lunas</center></td>
+                                                <?php elseif($pembayaran['pembayaran'] - $pembayaran['pencairan'] - $pembayaran['retur_cancel'] <= 0):?>
+                                                    <td class="text-nowrap bg-primary text-light"><center>Piutang</center></td>
                                                 <?php else :?>
                                                     <td class="text-nowrap bg-warning text-light"><center>Lunas Sebagian</center></td>
                                                 <?php endif;?>
