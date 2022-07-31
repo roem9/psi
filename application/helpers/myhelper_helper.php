@@ -284,6 +284,8 @@
 
     function utang_gudang($id_gudang){
         $CI =& get_instance();
+        
+        // closingan
         $CI->db->from("closing");
         $CI->db->where(["id_gudang" => $id_gudang, "tgl_kirim !=" => "NULL", "hapus" => 0]);
         $closing = $CI->db->get()->result_array();
@@ -298,12 +300,28 @@
             }
         }
 
+        // retur
+        $CI->db->from("closing");
+        $CI->db->where(["id_gudang" => $id_gudang, "tgl_kirim !=" => "NULL", "status" => "Returned", "status_retur" => "Sudah Diterima", "hapus" => 0]);
+        $closing = $CI->db->get()->result_array();
+
+        $retur = 0;
+        foreach ($closing as $closing) {
+            $CI->db->from("detail_closing");
+            $CI->db->where(["id_closing" => $closing['id_closing']]);
+            $detail_closing = $CI->db->get()->result_array();
+            foreach ($detail_closing as $detail_closing) {
+                $retur += ($detail_closing['qty'] * $detail_closing['harga_suplier']);
+            }
+        }
+
+        // pencairan
         $CI->db->select("SUM(nominal) as nominal");
         $CI->db->from("pencairan_gudang");
         $CI->db->where(["id_gudang" => $id_gudang]);
         $pencairan = $CI->db->get()->row_array();
 
-        $utang = $pencairan['nominal'] - $nominal;
+        $utang = $pencairan['nominal'] - $nominal + $retur;
 
         if($utang < 0){
             return "<span style='color: red'><b>" . rupiah(abs($utang)) . "</b></span>";
