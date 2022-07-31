@@ -81,6 +81,7 @@ class Closing_model extends MY_Model {
                     "qty" => $qty[$i],
                     "harga" => $varian['harga'],
                     "komisi" => $varian['komisi'],
+                    "harga_suplier" => $varian['harga_suplier'],
                 ];
     
                 $query = $this->add_data("detail_closing", $data);
@@ -183,6 +184,7 @@ class Closing_model extends MY_Model {
                 "qty" => $qty[$i],
                 "harga" => $varian['harga'],
                 "komisi" => $varian['komisi'],
+                "harga_suplier" => $varian['harga_suplier'],
             ];
 
             $query = $this->add_data("detail_closing", $data);
